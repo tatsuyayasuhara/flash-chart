@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chart</title>
+    <style>
+        .column3 div{
+            width: calc(33.33% - 20px);
+            float: left;
+        }
+        .column3 .one{
+            margin-right: 20px;
+            margin-left: 10px;
+        }
+        .column3 .two{
+            margin-right: 20px;
+        }
+        .column3 .three{
+            margin-right: 10px;
+            float: end;
+        }
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {packages: ['corechart', 'line']});
+
+        var config = {
+            externalVoltage: 9000,
+            vacancyEnergy: 4.1,
+            oxygenPressure: 0.21,
+            window: {
+                min: {
+                    hAxis: 500,
+                    vAxis: 0,
+                },
+                max: {
+                    hAxis: 1500,
+                    vAxis: 1.0,
+                }
+            },
+        };
+
+        function send () {
+            var params = {
+                "external_voltage": config.externalVoltage,
+                "vacancy_energy": config.vacancyEnergy,
+                "oxygen_pressure": config.oxygenPressure,
+            };
+            $.get("/calc/flash/", params).done(function (data) {
+                var dataTable = new google.visualization.DataTable();
+                dataTable.addColumn('number', 'X');
+                dataTable.addColumn('number', 'W');
+
+                var googleChartData = [];
+                for (i = 0; i < data["temperature"].values.length; i++){
+                    var temp = data["temperature"].values[i];
+                    var power = data["power_dissipation"].values[i]/1.0e+9;
+                    var datas = [temp, power];
+                    googleChartData.push(datas)
+                }
+                dataTable.addRows(googleChartData);
+
+                var options = {
+                    title: "Furnace temperature dependence of power dissipation in flash sintering.",
+                    hAxis: {
+                        title: "Temperature /℃",
+                        viewWindow: {
+                            max: config.window.max.hAxis,
+                            min: config.window.min.hAxis,
+                        },
+                    },
+                    vAxis: {
+                        title: 'Power dissipation /10^9Wm^-3',
+                        viewWindow: {
+                            max: config.window.max.vAxis,
+                            min: config.window.min.vAxis,
+                        },
+                    },
+                    colors: ['#d80000']
+                };
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                chart.draw(dataTable, options);
+            })
+        }
+
+        window.onload = function () {
+            send();
+
+            $('#input_ev').change(function () {
+                config.externalVoltage = this.value;
+                document.getElementById('output_ev').value=this.value;
+                send();
+            });
+
+            $('#input_ve').change(function () {
+                config.vacancyEnergy = this.value;
+                document.getElementById('output_ve').value=this.value;
+                send();
+            });
+
+            $('#input_pO2').change(function () {
+                config.oxygenPressure = this.value;
+                document.getElementById('output_pO2').value=this.value;
+                send();
+            });
+        };
+
+        function ev_change(num) {
+            document.getElementById('output_ev').value = num;
+            document.getElementById('input_ev').value = num;
+            config.externalVoltage = num;
+            send();
+        }
+
+        function ve_change(num) {
+            document.getElementById('output_ve').value = num;
+            document.getElementById('input_ve').value = num;
+            config.vacancyEnergy = num;
+            send();
+        }
+
+        function pO2_change(num) {
+            document.getElementById('output_pO2').value = num;
+            document.getElementById('input_pO2').value = num;
+            config.oxygenPressure = num;
+            send();
+        }
+
+    </script>
+</head>
+<body>
+
+<div id="chart_div" style="width: 720px; height: 400px; margin: auto"></div>
+
+<section class="column3">
+    <div class="one">
+        <h3>外部電圧 <output id="output_ev">9000</output>[V/m]<br></h3>
+        <input type="range" value="9000" min="0" max="20000" step="100" style="margin-left: 10px"
+               oninput="ev_change(this.value)" list="marks_ev">
+        <input id="input_ev" type="text" value="9000" style="width: 50px; margin-left: 10px">(入力用)
+    </div>
+    <div class="two">
+        <h3>空孔形成エネルギー <output id="output_ve">4.1</output>[eV]<br></h3>
+        <input type="range" value="4.1" min="3" max="5.5" step="0.01" style="margin-left: 10px"
+               oninput="ve_change(this.value)" list="marks_ve">
+        <input id="input_ve" type="text" value="4.1" style="width: 50px; margin-left: 10px">(入力用)
+    </div>
+    <div class="three">
+        <h3>酸素分圧 <output id="output_pO2">0.21</output>[Pa]<br></h3>
+        <input type="range" value="0.21" min="0" max="0.3" step="0.0001" style="margin-left: 10px"
+               oninput="pO2_change(this.value)" list="marks_pO2">
+        <input id="input_pO2" type="text" value="0.21" style="width: 50px; margin-left: 10px">(入力用)
+    </div>
+</section>
+
+<datalist id="marks_ev">
+    <option value="0"></option>
+    <option value="5000"></option>
+    <option value="10000"></option>
+    <option value="15000"></option>
+    <option value="20000"></option>
+</datalist>
+<datalist id="marks_ve">
+    <option value="3.0"></option>
+    <option value="3.5"></option>
+    <option value="4.0"></option>
+    <option value="4.5"></option>
+    <option value="5.0"></option>
+    <option value="5.5"></option>
+</datalist>
+<datalist id="marks_pO2">
+    <option value="0"></option>
+    <option value="0.1"></option>
+    <option value="0.2"></option>
+    <option value="0.3"></option>
+</datalist>
+
+</body>
+</html>

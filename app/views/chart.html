@@ -68,13 +68,23 @@
                 dataTable.addRows(googleChartData);
 
                 var options = {
+                    legend: {
+                        position: "none"
+                    },
                     title: config.title,
+                    titleTextStyle: {
+                        fontSize: 20
+                    },
                     hAxis: {
                         title: config.hAxis.title,
                         viewWindow: {
                             max: config.hAxis.window.max,
                             min: config.hAxis.window.min,
                         },
+                        titleTextStyle: {
+                            italic: false,
+                            bold: true,
+                        }
                     },
                     vAxis: {
                         title: config.vAxis.title,
@@ -82,6 +92,10 @@
                             max: config.vAxis.window.max,
                             min: config.vAxis.window.min,
                         },
+                        titleTextStyle: {
+                            italic: false,
+                            bold: true,
+                        }
                     },
                     colors: [config.color],
                 };
@@ -134,7 +148,7 @@
 </head>
 <body>
 
-<div id="chart_div" style="width: 720px; height: 400px; margin: auto"></div>
+<div id="chart_div" style="width: 900px; height: 500px; margin: auto"></div>
 
 <section class="column3">
     <div class="one">

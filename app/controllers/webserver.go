@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"flash-chart/app/models"
-	"flash-chart/config"
 	"fmt"
 	"html/template"
 	"log"
@@ -14,7 +13,7 @@ import (
 
 func StartWebServer(addr string) error {
 	if addr == ":" {
-		addr = fmt.Sprintf(":%d", config.Config.Port)
+		addr = fmt.Sprintf(":%d", 8080)
 	}
 	http.HandleFunc("/calc/flash/", calcFlashHandler)
 	http.HandleFunc("/chart/", viewChartHandler)

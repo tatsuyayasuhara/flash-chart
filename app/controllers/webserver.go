@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"flash-chart/app/models"
 	"flash-chart/config"
 	"fmt"
 	"html/template"
@@ -28,47 +29,16 @@ func viewChartHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-type MyFloat float64
-
-type Temperature struct {
-	Values []float64 `json:"values,omitempty"`
-}
-
-type PowerDissipation struct {
-	Values []float64 `json:"values,omitempty"`
-}
-
-type DataFrameFlash struct {
-	Temperature Temperature `json:"temperature,omitempty"`
-	PowerDissipation PowerDissipation `json:"power_dissipation,omitempty"`
-}
-
 func calcFlashHandler(w http.ResponseWriter, r *http.Request) {
 	externalVoltage := r.URL.Query().Get("external_voltage")
-	if externalVoltage == "" {
-		log.Println("not fount: external_voltage")
-		return
-	}
-	ev, _ := strconv.ParseFloat(externalVoltage, 64)
-
 	vacancyEnergy := r.URL.Query().Get("vacancy_energy")
-	if vacancyEnergy == "" {
-		log.Println("not fount: vacancy_energy")
-		return
-	}
-	ve, _ := strconv.ParseFloat(vacancyEnergy, 64)
-
 	oxygenPressure := r.URL.Query().Get("oxygen_pressure")
-	if oxygenPressure == "" {
-		log.Println("not fount: oxygen_pressure")
-		return
-	}
+	ev, _ := strconv.ParseFloat(externalVoltage, 64)
+	ve, _ := strconv.ParseFloat(vacancyEnergy, 64)
 	pO2, _ := strconv.ParseFloat(oxygenPressure, 64)
-
-	//log.Printf("ev=%g, ve=%g\n", ev, ve)
+	//log.Printf("ev=%g, ve=%g, pO2=%g\n", ev, ve, pO2)
 
 	dff := CalcW(ev, ve, pO2)
-
 	js, err := json.Marshal(dff)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -95,7 +65,7 @@ var dt = 1.0
 var dTFdt = 1.0/6.0
 var ds = 0.01*dt
 
-func CalcW(voltage, vacancyE, pressure float64) *DataFrameFlash {
+func CalcW(voltage, vacancyE, pressure float64) *models.DataFrameFlash {
 	//nd := NDP - 1
 	//Cp := 56.188
 	//vm0 := 123.233e-03/(6.10e+03)
@@ -133,8 +103,8 @@ func CalcW(voltage, vacancyE, pressure float64) *DataFrameFlash {
 		W := I * vol
 		wList = append(wList, W)
 	}
-	return &DataFrameFlash{
-		Temperature:      Temperature{tList},
-		PowerDissipation: PowerDissipation{wList},
+	return &models.DataFrameFlash{
+		Temperature:      models.Temperature{Values: tList},
+		PowerDissipation: models.PowerDissipation{Values: wList},
 	}
 }

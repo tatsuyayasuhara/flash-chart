@@ -29,16 +29,22 @@
             externalVoltage: 9000,
             vacancyEnergy: 4.1,
             oxygenPressure: 0.21,
-            window: {
-                min: {
-                    hAxis: 500,
-                    vAxis: 0,
-                },
-                max: {
-                    hAxis: 1500,
-                    vAxis: 1.0,
+            title: "Furnace temperature dependence of power dissipation in flash sintering.",
+            hAxis: {
+                title: "Temperature /℃",
+                window: {
+                    max: 1500,
+                    min: 500,
                 }
             },
+            vAxis: {
+                title: "Power dissipation /10^9Wm^-3",
+                window: {
+                    max: 1.0,
+                    min: 0,
+                }
+            },
+            color: "#d80000",
         };
 
         function send () {
@@ -62,22 +68,22 @@
                 dataTable.addRows(googleChartData);
 
                 var options = {
-                    title: "Furnace temperature dependence of power dissipation in flash sintering.",
+                    title: config.title,
                     hAxis: {
-                        title: "Temperature /℃",
+                        title: config.hAxis.title,
                         viewWindow: {
-                            max: config.window.max.hAxis,
-                            min: config.window.min.hAxis,
+                            max: config.hAxis.window.max,
+                            min: config.hAxis.window.min,
                         },
                     },
                     vAxis: {
-                        title: 'Power dissipation /10^9Wm^-3',
+                        title: config.vAxis.title,
                         viewWindow: {
-                            max: config.window.max.vAxis,
-                            min: config.window.min.vAxis,
+                            max: config.vAxis.window.max,
+                            min: config.vAxis.window.min,
                         },
                     },
-                    colors: ['#d80000']
+                    colors: [config.color],
                 };
                 var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
                 chart.draw(dataTable, options);
@@ -86,47 +92,44 @@
 
         window.onload = function () {
             send();
-
-            $('#input_ev').change(function () {
-                config.externalVoltage = this.value;
-                document.getElementById('output_ev').value=this.value;
-                send();
-            });
-
-            $('#input_ve').change(function () {
-                config.vacancyEnergy = this.value;
-                document.getElementById('output_ve').value=this.value;
-                send();
-            });
-
-            $('#input_pO2').change(function () {
-                config.oxygenPressure = this.value;
-                document.getElementById('output_pO2').value=this.value;
-                send();
-            });
+            $('#input_ev_txt').change(function () { send_ev(this.value); });
+            $('#input_ev_sld').change(function () { send_ev(this.value); });
+            $('#input_ve_txt').change(function () { send_ve(this.value); });
+            $('#input_ve_sld').change(function () { send_ve(this.value); });
+            $('#input_pO2_txt').change(function () { send_pO2(this.value); });
+            $('#input_pO2_sld').change(function () { send_pO2(this.value); });
         };
 
-        function ev_change(num) {
-            document.getElementById('output_ev').value = num;
-            document.getElementById('input_ev').value = num;
+        function send_ev(num) {
             config.externalVoltage = num;
+            document.getElementById('output_ev').value = num;
+            document.getElementById('input_ev_sld').value = num;
             send();
         }
-
-        function ve_change(num) {
-            document.getElementById('output_ve').value = num;
-            document.getElementById('input_ve').value = num;
+        function send_ve(num) {
             config.vacancyEnergy = num;
+            document.getElementById('output_ve').value = num;
+            document.getElementById('input_ve_sld').value = num;
             send();
         }
-
-        function pO2_change(num) {
-            document.getElementById('output_pO2').value = num;
-            document.getElementById('input_pO2').value = num;
+        function send_pO2(num) {
             config.oxygenPressure = num;
+            document.getElementById('output_pO2').value = num;
+            document.getElementById('input_pO2_sld').value = num;
             send();
         }
-
+        function changing_ev(num) {
+            document.getElementById('output_ev').value = num;
+            document.getElementById('input_ev_txt').value = num;
+        }
+        function changing_ve(num) {
+            document.getElementById('output_ve').value = num;
+            document.getElementById('input_ve_txt').value = num;
+        }
+        function changing_pO2(num) {
+            document.getElementById('output_pO2').value = num;
+            document.getElementById('input_pO2_txt').value = num;
+        }
     </script>
 </head>
 <body>
@@ -136,21 +139,21 @@
 <section class="column3">
     <div class="one">
         <h3>外部電圧 <output id="output_ev">9000</output>[V/m]<br></h3>
-        <input type="range" value="9000" min="0" max="20000" step="100" style="margin-left: 10px"
-               oninput="ev_change(this.value)" list="marks_ev">
-        <input id="input_ev" type="text" value="9000" style="width: 50px; margin-left: 10px">(入力用)
+        <input id="input_ev_sld" type="range" value="9000" min="0" max="20000" step="100" style="margin-left: 10px"
+               oninput="changing_ev(this.value)" list="marks_ev">
+        <input id="input_ev_txt" type="text" value="9000" style="width: 50px; margin-left: 10px">(入力用)
     </div>
     <div class="two">
         <h3>空孔形成エネルギー <output id="output_ve">4.1</output>[eV]<br></h3>
-        <input type="range" value="4.1" min="3" max="5.5" step="0.01" style="margin-left: 10px"
-               oninput="ve_change(this.value)" list="marks_ve">
-        <input id="input_ve" type="text" value="4.1" style="width: 50px; margin-left: 10px">(入力用)
+        <input id="input_ve_sld" type="range" value="4.1" min="3" max="5.5" step="0.01" style="margin-left: 10px"
+               oninput="changing_ve(this.value)" list="marks_ve">
+        <input id="input_ve_txt" type="text" value="4.1" style="width: 50px; margin-left: 10px">(入力用)
     </div>
     <div class="three">
         <h3>酸素分圧 <output id="output_pO2">0.21</output>[Pa]<br></h3>
-        <input type="range" value="0.21" min="0" max="0.3" step="0.0001" style="margin-left: 10px"
-               oninput="pO2_change(this.value)" list="marks_pO2">
-        <input id="input_pO2" type="text" value="0.21" style="width: 50px; margin-left: 10px">(入力用)
+        <input id="input_pO2_sld" type="range" value="0.21" min="0" max="0.3" step="0.00001" style="margin-left: 10px"
+               oninput="changing_pO2(this.value)" list="marks_pO2">
+        <input id="input_pO2_txt" type="text" value="0.21" style="width: 50px; margin-left: 10px">(入力用)
     </div>
 </section>
 

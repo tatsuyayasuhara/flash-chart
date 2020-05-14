@@ -12,12 +12,14 @@ import (
 	"strconv"
 )
 
-func StartWebServer() error {
-	port := config.Config.Port
+func StartWebServer(addr string) error {
+	if addr == ":" {
+		addr = fmt.Sprintf(":%d", config.Config.Port)
+	}
 	http.HandleFunc("/calc/flash/", calcFlashHandler)
 	http.HandleFunc("/chart/", viewChartHandler)
-	log.Printf("start server at :%d, open on your browser -> http://localhost:%d/chart", port, port)
-	return http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	log.Printf("start server at %s, open on your browser -> http://localhost%s/chart", addr, addr)
+	return http.ListenAndServe(fmt.Sprintf("%s", addr), nil)
 }
 
 var templates = template.Must(template.ParseFiles("app/views/chart.html"))

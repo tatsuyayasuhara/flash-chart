@@ -138,19 +138,19 @@
 
 <section class="column3">
     <div class="one">
-        <h3>外部電圧 <output id="output_ev">9000</output>[V/m]<br></h3>
+        <h3>外部電圧：<output id="output_ev">9000</output>[V/m]<br></h3>
         <input id="input_ev_sld" type="range" value="9000" min="0" max="20000" step="100" style="margin-left: 10px"
                oninput="changing_ev(this.value)" list="marks_ev">
         <input id="input_ev_txt" type="text" value="9000" style="width: 50px; margin-left: 10px">(入力用)
     </div>
     <div class="two">
-        <h3>空孔形成エネルギー <output id="output_ve">4.1</output>[eV]<br></h3>
+        <h3>空孔形成エネルギー：<output id="output_ve">4.1</output>[eV]<br></h3>
         <input id="input_ve_sld" type="range" value="4.1" min="3" max="5.5" step="0.01" style="margin-left: 10px"
                oninput="changing_ve(this.value)" list="marks_ve">
         <input id="input_ve_txt" type="text" value="4.1" style="width: 50px; margin-left: 10px">(入力用)
     </div>
     <div class="three">
-        <h3>酸素分圧 <output id="output_pO2">0.21</output>[Pa]<br></h3>
+        <h3>酸素分圧：<output id="output_pO2">0.21</output><br></h3>
         <input id="input_pO2_sld" type="range" value="0.21" min="0" max="0.3" step="0.00001" style="margin-left: 10px"
                oninput="changing_pO2(this.value)" list="marks_pO2">
         <input id="input_pO2_txt" type="text" value="0.21" style="width: 50px; margin-left: 10px">(入力用)

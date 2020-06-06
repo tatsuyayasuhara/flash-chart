@@ -29,6 +29,7 @@
             externalVoltage: 9000,
             vacancyEnergy: 4.1,
             oxygenPressure: 0.21,
+            heatCapacity: 56.188,
             title: "Furnace temperature dependence of power dissipation in flash sintering.",
             hAxis: {
                 title: "Temperature /℃",
@@ -52,6 +53,7 @@
                 "external_voltage": config.externalVoltage,
                 "vacancy_energy": config.vacancyEnergy,
                 "oxygen_pressure": config.oxygenPressure,
+                "heat_capacity": config.heatCapacity,
             };
             $.get("/calc/flash/", params).done(function (data) {
                 var dataTable = new google.visualization.DataTable();
@@ -112,6 +114,7 @@
             $('#input_ve_sld').change(function () { send_ve(this.value); });
             $('#input_pO2_txt').change(function () { send_pO2(this.value); });
             $('#input_pO2_sld').change(function () { send_pO2(this.value); });
+            $('#input_cp_txt').change(function () { send_cp(this.value); });
         };
 
         function send_ev(num) {
@@ -130,6 +133,10 @@
             config.oxygenPressure = num;
             document.getElementById('output_pO2').value = num;
             document.getElementById('input_pO2_sld').value = num;
+            send();
+        }
+        function send_cp(num) {
+            config.heatCapacity = num;
             send();
         }
         function changing_ev(num) {
@@ -168,6 +175,12 @@
         <input id="input_pO2_sld" type="range" value="0.21" min="0" max="0.3" step="0.00001" style="margin-left: 10px"
                oninput="changing_pO2(this.value)" list="marks_pO2">
         <input id="input_pO2_txt" type="text" value="0.21" style="width: 50px; margin-left: 10px">(入力用)
+    </div>
+</section>
+
+<section class="column3">
+    <div class="one">
+        <h3>モル熱容量：<input id="input_cp_txt" type="text" value="56.188" style="width: 50px; margin-left: 10px">[J/molK]</h3>
     </div>
 </section>
 

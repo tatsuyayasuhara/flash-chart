@@ -20,41 +20,27 @@ const RR float64 = 8.3145
 const FF float64 = 96485.33289 // [C/mol]
 const E0 float64 = 1.6021766208e-19 // [C]
 var nd = NDP - 1
-var Cp = 56.188 // モル熱容量 //todo 変数
-var Mw = 123.233e-03 // 分子量 //todo 変数
-var den = 6.10e+03 // 密度 //todo 変数
-var vm0 = Mw/den
-var Cpv = Cp/vm0
-var N0 = 7.0e+20 // 単位体積当たりの電子の有効状態密度(酸素イオン空孔形成に関わる) //todo 変数
-var dSv = RR // 酸素イオン空孔の形成エントロピー　//todo 変数
-var B0 = math.Pow(2.0 * math.Exp(dSv/RR), 1.0/3.0)
-var M0 = 8.02e-02   // 温度の関数の場合もある //todo 変数
-var dE = 1.89       // [eV] エネルギー障壁的なもの？再配列エネルギー？ //todo 変数
-var EM = dE*FF
-var zz = -1.5       // 局所的な価数(電荷) //todo 変数
-var phi = 5.0       // 外部局所電位(電場ポテンシャル) //todo 変数
-var zp = zz*phi
-var extPote = zp*FF // [J/mol]
 var dt = 1.0
 var dTFdt = 1.0/6.0
 var ds = 0.01*dt
 
-func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure float64) {
-	//nd := NDP - 1
-	//Cp := 56.188
-	//vm0 := 123.233e-03/(6.10e+03)
-	//Cp := Cp/vm0
-	//E0 := 1.6021766208e-19
-	//N0 := 7.0e+20
-	//B0 := math.Pow(2.0 * math.Exp(RR/RR), 1.0/3.0)
-	//EM := 1.89*FF
-	//M0 := 8.02e-02
-	//zzphi := -7.5
-	//extPote := zzphi*FF
-	//dt := 1.0
-	//dTFdt := 1.0/6.0
-	//ds := 0.01*dt
-	// ----------------------
+func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap float64) {
+	var Cp = heatCap //56.188 // モル熱容量 //todo 変数
+	var Mw = 123.233e-03 // 分子量 //todo 変数
+	var den = 6.10e+03 // 密度 //todo 変数
+	var vm0 = Mw/den
+	var Cpv = Cp/vm0
+	var N0 = 7.0e+20 // 単位体積当たりの電子の有効状態密度(酸素イオン空孔形成に関わる) //todo 変数
+	var dSv = RR // 酸素イオン空孔の形成エントロピー　//todo 変数
+	var B0 = math.Pow(2.0 * math.Exp(dSv/RR), 1.0/3.0)
+	var M0 = 8.02e-02   // 温度の関数の場合もある //todo 変数
+	var dE = 1.89       // [eV] エネルギー障壁的なもの？再配列エネルギー？ //todo 変数
+	var EM = dE*FF
+	var zz = -1.5       // 局所的な価数(電荷) //todo 変数
+	var phi = 5.0       // 外部局所電位(電場ポテンシャル) //todo 変数
+	var zp = zz*phi
+	var extPote = zp*FF // [J/mol]
+
 	TF := 773.0
 	T := TF
 	// 外部入力3項

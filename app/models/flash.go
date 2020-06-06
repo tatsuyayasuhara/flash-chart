@@ -24,20 +24,21 @@ var dt = 1.0
 var dTFdt = 1.0/6.0
 var ds = 0.01*dt
 
-func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap float64) {
-	var Cp = heatCap //56.188 // モル熱容量 //todo 変数
-	var Mw = 123.233e-03 // 分子量 //todo 変数
-	var den = 6.10e+03 // 密度 //todo 変数
+func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molWeight, density, electronDOS,
+	formationEntropy, mobilityCoef, rearrangeE, localValency, localPotential float64) {
+	var Cp = heatCap //56.188 // モル熱容量
+	var Mw = molWeight*1e-03 //123.233e-03 // 分子量 [kg/mol]
+	var den = density*1e+03 //6.10e+03 // 密度
 	var vm0 = Mw/den
 	var Cpv = Cp/vm0
-	var N0 = 7.0e+20 // 単位体積当たりの電子の有効状態密度(酸素イオン空孔形成に関わる) //todo 変数
-	var dSv = RR // 酸素イオン空孔の形成エントロピー　//todo 変数
+	var N0 = electronDOS //7.0e+20 // 単位体積当たりの電子の有効状態密度(酸素イオン空孔形成に関わる)
+	var dSv = formationEntropy //RR // 酸素イオン空孔の形成エントロピー
 	var B0 = math.Pow(2.0 * math.Exp(dSv/RR), 1.0/3.0)
-	var M0 = 8.02e-02   // 温度の関数の場合もある //todo 変数
-	var dE = 1.89       // [eV] エネルギー障壁的なもの？再配列エネルギー？ //todo 変数
+	var M0 = mobilityCoef //8.02e-02   // 温度の関数の場合もある
+	var dE = rearrangeE //1.89       // [eV] エネルギー障壁的なもの？再配列エネルギー？
 	var EM = dE*FF
-	var zz = -1.5       // 局所的な価数(電荷) //todo 変数
-	var phi = 5.0       // 外部局所電位(電場ポテンシャル) //todo 変数
+	var zz = localValency //-1.5       // 局所的な価数(電荷)
+	var phi = localPotential //5.0       // 外部局所電位(電場ポテンシャル)
 	var zp = zz*phi
 	var extPote = zp*FF // [J/mol]
 

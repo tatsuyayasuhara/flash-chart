@@ -26,10 +26,18 @@
         google.charts.load('current', {packages: ['corechart', 'line']});
 
         var config = {
-            externalVoltage: 9000,
-            vacancyEnergy: 4.1,
-            oxygenPressure: 0.21,
-            heatCapacity: 56.188,
+            externalVoltage:  9000,
+            vacancyEnergy:    4.1,
+            oxygenPressure:   0.21,
+            heatCapacity:     56.188,
+            molWeight:        123.233,
+            density:          6.10,
+            electronDOS:      7.0e+20,
+            formationEntropy: 8.3145,
+            mobilityCoef:     8.02e-02,
+            rearrangeE:       1.89,
+            localValency:     -1.5,
+            localPotential:   5.0,
             title: "Furnace temperature dependence of power dissipation in flash sintering.",
             hAxis: {
                 title: "Temperature /℃",
@@ -54,6 +62,14 @@
                 "vacancy_energy": config.vacancyEnergy,
                 "oxygen_pressure": config.oxygenPressure,
                 "heat_capacity": config.heatCapacity,
+                "mol_weight": config.molWeight,
+                "density": config.density,
+                "electron_DOS": config.electronDOS,
+                "formation_entropy": config.formationEntropy,
+                "mobility_coef": config.mobilityCoef,
+                "rearrange_energy": config.rearrangeE,
+                "local_valency": config.localValency,
+                "local_potential": config.localPotential,
             };
             $.get("/calc/flash/", params).done(function (data) {
                 var dataTable = new google.visualization.DataTable();
@@ -115,6 +131,14 @@
             $('#input_pO2_txt').change(function () { send_pO2(this.value); });
             $('#input_pO2_sld').change(function () { send_pO2(this.value); });
             $('#input_cp_txt').change(function () { send_cp(this.value); });
+            $('#input_mw_txt').change(function () { send_mw(this.value); });
+            $('#input_den_txt').change(function () { send_den(this.value); });
+            $('#input_eDOS_txt').change(function () { send_eDOS(this.value); });
+            $('#input_fe_txt').change(function () { send_fe(this.value); });
+            $('#input_mc_txt').change(function () { send_mc(this.value); });
+            $('#input_re_txt').change(function () { send_re(this.value); });
+            $('#input_lv_txt').change(function () { send_lv(this.value); });
+            $('#input_lp_txt').change(function () { send_lp(this.value); });
         };
 
         function send_ev(num) {
@@ -137,6 +161,38 @@
         }
         function send_cp(num) {
             config.heatCapacity = num;
+            send();
+        }
+        function send_mw(num) {
+            config.molWeight = num;
+            send();
+        }
+        function send_den(num) {
+            config.density = num;
+            send();
+        }
+        function send_eDOS(num) {
+            config.electronDOS = num;
+            send();
+        }
+        function send_fe(num) {
+            config.formationEntropy = num;
+            send();
+        }
+        function send_mc(num) {
+            config.mobilityCoef = num;
+            send();
+        }
+        function send_re(num) {
+            config.rearrangeE = num;
+            send();
+        }
+        function send_lv(num) {
+            config.localValency = num;
+            send();
+        }
+        function send_lp(num) {
+            config.localPotential = num;
             send();
         }
         function changing_ev(num) {
@@ -162,25 +218,55 @@
         <h3>外部電圧：<output id="output_ev">9000</output>[V/m]<br></h3>
         <input id="input_ev_sld" type="range" value="9000" min="0" max="20000" step="100" style="margin-left: 10px"
                oninput="changing_ev(this.value)" list="marks_ev">
-        <input id="input_ev_txt" type="text" value="9000" style="width: 50px; margin-left: 10px">(入力用)
+        <input id="input_ev_txt" type="text" value="9000" style="font-size: 20px; width: 70px; margin-left: 10px">
     </div>
     <div class="two">
         <h3>空孔形成エネルギー：<output id="output_ve">4.1</output>[eV]<br></h3>
         <input id="input_ve_sld" type="range" value="4.1" min="3" max="5.5" step="0.01" style="margin-left: 10px"
                oninput="changing_ve(this.value)" list="marks_ve">
-        <input id="input_ve_txt" type="text" value="4.1" style="width: 50px; margin-left: 10px">(入力用)
+        <input id="input_ve_txt" type="text" value="4.1" style="font-size: 20px; width: 60px; margin-left: 10px">
     </div>
     <div class="three">
         <h3>酸素分圧：<output id="output_pO2">0.21</output><br></h3>
         <input id="input_pO2_sld" type="range" value="0.21" min="0" max="0.3" step="0.00001" style="margin-left: 10px"
                oninput="changing_pO2(this.value)" list="marks_pO2">
-        <input id="input_pO2_txt" type="text" value="0.21" style="width: 50px; margin-left: 10px">(入力用)
+        <input id="input_pO2_txt" type="text" value="0.21" style="font-size: 20px; width: 60px; margin-left: 10px">
     </div>
 </section>
 
 <section class="column3">
     <div class="one">
-        <h3>モル熱容量：<input id="input_cp_txt" type="text" value="56.188" style="width: 50px; margin-left: 10px">[J/molK]</h3>
+        <h3>モル熱容量：<input id="input_cp_txt" type="text" value="56.188" style="font-size: 20px; width: 90px">[J/molK]</h3>
+    </div>
+    <div class="two">
+        <h3>分子量：<input id="input_mw_txt" type="text" value="123.233" style="font-size: 20px; width: 100px">[g/mol]</h3>
+    </div>
+    <div class="three">
+        <h3>密度：<input id="input_den_txt" type="text" value="6.10" style="font-size: 20px; width: 60px">[g/m^3]</h3>
+    </div>
+</section>
+
+<section class="column3">
+    <div class="one">
+        <h3>電子の有効状態密度：<input id="input_eDOS_txt" type="text" value="7.0e+20" style="font-size: 20px; width: 100px">[?]</h3>
+    </div>
+    <div class="two">
+        <h3>空孔形成エントロピー：<input id="input_fe_txt" type="text" value="8.3145" style="font-size: 20px; width: 90px">[J/K]</h3>
+    </div>
+    <div class="three">
+        <h3>電子の移動度係数：<input id="input_mc_txt" type="text" value="8.02e-02" style="font-size: 20px; width:100px">[?]</h3>
+    </div>
+</section>
+
+<section class="column3">
+    <div class="one">
+        <h3>再配列エネルギー：<input id="input_re_txt" type="text" value="1.89" style="font-size: 20px; width: 60px">[eV]</h3>
+    </div>
+    <div class="two">
+        <h3>局所的な価数：<input id="input_lv_txt" type="text" value="-1.5" style="font-size: 20px; width: 60px">[?]</h3>
+    </div>
+    <div class="three">
+        <h3>外部局所電位：<input id="input_lp_txt" type="text" value="5.0" style="font-size: 20px; width: 60px">[V]</h3>
     </div>
 </section>
 

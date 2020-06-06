@@ -19,6 +19,11 @@
             margin-right: 10px;
             float: end;
         }
+        .input_txt{
+            font-size: 20px;
+            width: 100px;
+            margin-left: 10px
+        }
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -124,21 +129,18 @@
 
         window.onload = function () {
             send();
-            $('#input_ev_txt').change(function () { send_ev(this.value); });
-            $('#input_ev_sld').change(function () { send_ev(this.value); });
-            $('#input_ve_txt').change(function () { send_ve(this.value); });
-            $('#input_ve_sld').change(function () { send_ve(this.value); });
-            $('#input_pO2_txt').change(function () { send_pO2(this.value); });
-            $('#input_pO2_sld').change(function () { send_pO2(this.value); });
-            $('#input_cp_txt').change(function () { send_cp(this.value); });
-            $('#input_mw_txt').change(function () { send_mw(this.value); });
-            $('#input_den_txt').change(function () { send_den(this.value); });
-            $('#input_eDOS_txt').change(function () { send_eDOS(this.value); });
-            $('#input_fe_txt').change(function () { send_fe(this.value); });
-            $('#input_mc_txt').change(function () { send_mc(this.value); });
-            $('#input_re_txt').change(function () { send_re(this.value); });
-            $('#input_lv_txt').change(function () { send_lv(this.value); });
-            $('#input_lp_txt').change(function () { send_lp(this.value); });
+            $('#input_ev_txt, #input_ev_sld').change(function () { send_ev(this.value); });
+            $('#input_ve_txt, #input_ve_sld').change(function () { send_ve(this.value); });
+            $('#input_pO2_txt, #input_pO2_sld').change(function () { send_pO2(this.value); });
+            $('#input_cp_txt, #input_cp_sld').change(function () { send_cp(this.value); });
+            $('#input_mw_txt, #input_mw_sld').change(function () { send_mw(this.value); });
+            $('#input_den_txt, #input_den_sld').change(function () { send_den(this.value); });
+            $('#input_eDOS_txt, #input_eDOS_sld').change(function () { send_eDOS(this.value); });
+            $('#input_fe_txt, #input_fe_sld').change(function () { send_fe(this.value); });
+            $('#input_mc_txt, #input_mc_sld').change(function () { send_mc(this.value); });
+            $('#input_re_txt, #input_re_sld').change(function () { send_re(this.value); });
+            $('#input_lv_txt, #input_lv_sld').change(function () { send_lv(this.value); });
+            $('#input_lp_txt, #input_lp_sld').change(function () { send_lp(this.value); });
         };
 
         function send_ev(num) {
@@ -161,38 +163,56 @@
         }
         function send_cp(num) {
             config.heatCapacity = num;
+            document.getElementById('output_cp').value = num;
+            document.getElementById('input_cp_sld').value = num;
             send();
         }
         function send_mw(num) {
             config.molWeight = num;
+            document.getElementById('output_mw').value = num;
+            document.getElementById('input_mw_sld').value = num;
             send();
         }
         function send_den(num) {
             config.density = num;
+            document.getElementById('output_den').value = num;
+            document.getElementById('input_den_sld').value = num;
             send();
         }
         function send_eDOS(num) {
             config.electronDOS = num;
+            document.getElementById('output_eDOS').value = num;
+            document.getElementById('input_eDOS_sld').value = num;
             send();
         }
         function send_fe(num) {
             config.formationEntropy = num;
+            document.getElementById('output_fe').value = num;
+            document.getElementById('input_fe_sld').value = num;
             send();
         }
         function send_mc(num) {
             config.mobilityCoef = num;
+            document.getElementById('output_mc').value = num;
+            document.getElementById('input_mc_sld').value = num;
             send();
         }
         function send_re(num) {
             config.rearrangeE = num;
+            document.getElementById('output_re').value = num;
+            document.getElementById('input_re_sld').value = num;
             send();
         }
         function send_lv(num) {
             config.localValency = num;
+            document.getElementById('output_lv').value = num;
+            document.getElementById('input_lv_sld').value = num;
             send();
         }
         function send_lp(num) {
             config.localPotential = num;
+            document.getElementById('output_lp').value = num;
+            document.getElementById('input_lp_sld').value = num;
             send();
         }
         function changing_ev(num) {
@@ -207,6 +227,42 @@
             document.getElementById('output_pO2').value = num;
             document.getElementById('input_pO2_txt').value = num;
         }
+        function changing_cp(num) {
+            document.getElementById('output_cp').value = num;
+            document.getElementById('input_cp_txt').value = num;
+        }
+        function changing_mw(num) {
+            document.getElementById('output_mw').value = num;
+            document.getElementById('input_mw_txt').value = num;
+        }
+        function changing_den(num) {
+            document.getElementById('output_den').value = num;
+            document.getElementById('input_den_txt').value = num;
+        }
+        function changing_eDOS(num) {
+            document.getElementById('output_eDOS').value = num;
+            document.getElementById('input_eDOS_txt').value = num;
+        }
+        function changing_fe(num) {
+            document.getElementById('output_fe').value = num;
+            document.getElementById('input_fe_txt').value = num;
+        }
+        function changing_mc(num) {
+            document.getElementById('output_mc').value = num;
+            document.getElementById('input_mc_txt').value = num;
+        }
+        function changing_re(num) {
+            document.getElementById('output_re').value = num;
+            document.getElementById('input_re_txt').value = num;
+        }
+        function changing_lv(num) {
+            document.getElementById('output_lv').value = num;
+            document.getElementById('input_lv_txt').value = num;
+        }
+        function changing_lp(num) {
+            document.getElementById('output_lp').value = num;
+            document.getElementById('input_lp_txt').value = num;
+        }
     </script>
 </head>
 <body>
@@ -215,58 +271,73 @@
 
 <section class="column3">
     <div class="one">
-        <h3>外部電圧：<output id="output_ev">9000</output>[V/m]<br></h3>
-        <input id="input_ev_sld" type="range" value="9000" min="0" max="20000" step="100" style="margin-left: 10px"
-               oninput="changing_ev(this.value)" list="marks_ev">
-        <input id="input_ev_txt" type="text" value="9000" style="font-size: 20px; width: 70px; margin-left: 10px">
+        <h3>外部電圧：<output id="output_ev">9000</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}/{\rm m}]&chs=500" height="16px" style="margin-left: 10px"><br></h3>
+        <input id="input_ev_sld" type="range" value="9000" min="0" max="20000" step="100" style="margin-left: 10px" oninput="changing_ev(this.value)" list="marks_ev">
+        <input id="input_ev_txt" type="text" value="9000" class="input_txt">
     </div>
     <div class="two">
-        <h3>空孔形成エネルギー：<output id="output_ve">4.1</output>[eV]<br></h3>
-        <input id="input_ve_sld" type="range" value="4.1" min="3" max="5.5" step="0.01" style="margin-left: 10px"
-               oninput="changing_ve(this.value)" list="marks_ve">
-        <input id="input_ve_txt" type="text" value="4.1" style="font-size: 20px; width: 60px; margin-left: 10px">
+        <h3>空孔形成エネルギー：<output id="output_ve">4.1</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm eV}]&chs=500" height="16px" style="margin-left: 10px"><br></h3>
+        <input id="input_ve_sld" type="range" value="4.1" min="3" max="5.5" step="0.01" style="margin-left: 10px" oninput="changing_ve(this.value)" list="marks_ve">
+        <input id="input_ve_txt" type="text" value="4.1" class="input_txt">
     </div>
     <div class="three">
         <h3>酸素分圧：<output id="output_pO2">0.21</output><br></h3>
-        <input id="input_pO2_sld" type="range" value="0.21" min="0" max="0.3" step="0.00001" style="margin-left: 10px"
-               oninput="changing_pO2(this.value)" list="marks_pO2">
-        <input id="input_pO2_txt" type="text" value="0.21" style="font-size: 20px; width: 60px; margin-left: 10px">
+        <input id="input_pO2_sld" type="range" value="0.21" min="0" max="0.3" step="0.00001" style="margin-left: 10px" oninput="changing_pO2(this.value)" list="marks_pO2">
+        <input id="input_pO2_txt" type="text" value="0.21" class="input_txt">
     </div>
 </section>
 
 <section class="column3">
     <div class="one">
-        <h3>モル熱容量：<input id="input_cp_txt" type="text" value="56.188" style="font-size: 20px; width: 90px">[J/molK]</h3>
+        <h3>モル熱容量：<output id="output_cp">56.188</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm molK}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_cp_sld" type="range" value="56.188" min="0" max="100" step="0.001" style="margin-left: 10px" oninput="changing_cp(this.value)">
+        <input id="input_cp_txt" type="text" value="56.188" class="input_txt">
     </div>
     <div class="two">
-        <h3>分子量：<input id="input_mw_txt" type="text" value="123.233" style="font-size: 20px; width: 100px">[g/mol]</h3>
+        <h3>分子量：<output id="output_mw">123.233</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm g}/{\rm mol}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_mw_sld" type="range" value="123.233" min="0" max="200" step="0.001" style="margin-left: 10px" oninput="changing_mw(this.value)">
+        <input id="input_mw_txt" type="text" value="123.233" class="input_txt">
     </div>
     <div class="three">
-        <h3>密度：<input id="input_den_txt" type="text" value="6.10" style="font-size: 20px; width: 60px">[g/cm^3]</h3>
+        <h3>密度：<output id="output_den">6.10</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm g}/{\rm cm^3}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_den_sld" type="range" value="6.10" min="0" max="20" step="0.01" style="margin-left: 10px" oninput="changing_den(this.value)">
+        <input id="input_den_txt" type="text" value="6.10" class="input_txt">
     </div>
 </section>
 
 <section class="column3">
     <div class="one">
-        <h3>電子の有効状態密度：<input id="input_eDOS_txt" type="text" value="7.0e+20" style="font-size: 20px; width: 100px">[/m^3eV]</h3>
+        <h3>電子の有効状態密度：<output id="output_eDOS">7.0e+20</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[/{\rm m^3eV}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_eDOS_sld" type="range" value="7.0e+20" min="7.0e+18" max="7.0e+21" step="1e+18" style="margin-left: 10px" oninput="changing_eDOS(this.value)">
+        <input id="input_eDOS_txt" type="text" value="7.0e+20" class="input_txt">
     </div>
     <div class="two">
-        <h3>空孔形成エントロピー：<input id="input_fe_txt" type="text" value="8.3145" style="font-size: 20px; width: 90px">[J/molK]</h3>
+        <h3>空孔形成エントロピー：<output id="output_fe">8.3145</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm molK}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_fe_sld" type="range" value="8.3145" min="0" max="20" step="0.0001" style="margin-left: 10px" oninput="changing_fe(this.value)">
+        <input id="input_fe_txt" type="text" value="8.3145" class="input_txt">
     </div>
     <div class="three">
-        <h3>電子の移動度係数：<input id="input_mc_txt" type="text" value="8.02e-02" style="font-size: 20px; width:100px">[m^2/Vs]</h3>
+        <h3>移動度係数(関数)：<output id="output_mc">8.02e-02</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^2}/{\rm Vs}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_mc_sld" type="range" value="8.02e-02" min="0" max="1e+0" step="0.0001" style="margin-left: 10px" oninput="changing_mc(this.value)">
+        <input id="input_mc_txt" type="text" value="8.02e-02" class="input_txt">
     </div>
 </section>
 
 <section class="column3">
     <div class="one">
-        <h3>再配列エネルギー：<input id="input_re_txt" type="text" value="1.89" style="font-size: 20px; width: 60px">[eV]</h3>
+        <h3>再配列エネルギー：<output id="output_re">1.89</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm eV}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_re_sld" type="range" value="1.89" min="0" max="4" step="0.001" style="margin-left: 10px" oninput="changing_re(this.value)">
+        <input id="input_re_txt" type="text" value="1.89" class="input_txt">
     </div>
     <div class="two">
-        <h3>局所的な価数：<input id="input_lv_txt" type="text" value="-1.5" style="font-size: 20px; width: 60px">[C]</h3>
+        <h3>局所的な価数：<output id="output_lv">-1.5</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm C}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_lv_sld" type="range" value="-1.5" min="-2" max="2" step="0.01" style="margin-left: 10px" oninput="changing_lv(this.value)">
+        <input id="input_lv_txt" type="text" value="-1.5" class="input_txt">
     </div>
     <div class="three">
-        <h3>外部局所電位：<input id="input_lp_txt" type="text" value="5.0" style="font-size: 20px; width: 60px">[V]</h3>
+        <h3>外部局所電位：<output id="output_lp">5.0</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_lp_sld" type="range" value="5.0" min="0" max="10" step="0.01" style="margin-left: 10px" oninput="changing_lp(this.value)">
+        <input id="input_lp_txt" type="text" value="5.0" class="input_txt">
     </div>
 </section>
 
@@ -281,7 +352,7 @@
         <img src="https://chart.googleapis.com/chart?cht=tx&chl=P_{ {\rm O}_2}&chs=500" height="25px">：酸素分圧<br>
         <img src="https://chart.googleapis.com/chart?cht=tx&chl=C_{\rm p}&chs=500" height="25px">：モル熱容量<br>
         <img src="https://chart.googleapis.com/chart?cht=tx&chl=\Delta S_{\rm V_O^{\bullet\bullet}}&chs=500" height="25px">：空孔形成エントロピー<br>
-        <img src="https://chart.googleapis.com/chart?cht=tx&chl=M_0&chs=500" height="25px">：電子の移動度係数<br>
+        <img src="https://chart.googleapis.com/chart?cht=tx&chl=M_0&chs=500" height="25px">：電子の移動度係数(関数)<br>
         <img src="https://chart.googleapis.com/chart?cht=tx&chl=E_{\rm M}&chs=500" height="25px">：再配列エネルギー<br>
         <img src="https://chart.googleapis.com/chart?cht=tx&chl=z&chs=500" height="20px">：局所的な価数<br>
         <img src="https://chart.googleapis.com/chart?cht=tx&chl=\phi&chs=500" height="25px">：外部局所電位<br>

@@ -242,19 +242,19 @@
         <h3>分子量：<input id="input_mw_txt" type="text" value="123.233" style="font-size: 20px; width: 100px">[g/mol]</h3>
     </div>
     <div class="three">
-        <h3>密度：<input id="input_den_txt" type="text" value="6.10" style="font-size: 20px; width: 60px">[g/m^3]</h3>
+        <h3>密度：<input id="input_den_txt" type="text" value="6.10" style="font-size: 20px; width: 60px">[g/cm^3]</h3>
     </div>
 </section>
 
 <section class="column3">
     <div class="one">
-        <h3>電子の有効状態密度：<input id="input_eDOS_txt" type="text" value="7.0e+20" style="font-size: 20px; width: 100px">[?]</h3>
+        <h3>電子の有効状態密度：<input id="input_eDOS_txt" type="text" value="7.0e+20" style="font-size: 20px; width: 100px">[/m^3eV]</h3>
     </div>
     <div class="two">
-        <h3>空孔形成エントロピー：<input id="input_fe_txt" type="text" value="8.3145" style="font-size: 20px; width: 90px">[J/K]</h3>
+        <h3>空孔形成エントロピー：<input id="input_fe_txt" type="text" value="8.3145" style="font-size: 20px; width: 90px">[J/molK]</h3>
     </div>
     <div class="three">
-        <h3>電子の移動度係数：<input id="input_mc_txt" type="text" value="8.02e-02" style="font-size: 20px; width:100px">[?]</h3>
+        <h3>電子の移動度係数：<input id="input_mc_txt" type="text" value="8.02e-02" style="font-size: 20px; width:100px">[m^2/Vs]</h3>
     </div>
 </section>
 
@@ -263,12 +263,30 @@
         <h3>再配列エネルギー：<input id="input_re_txt" type="text" value="1.89" style="font-size: 20px; width: 60px">[eV]</h3>
     </div>
     <div class="two">
-        <h3>局所的な価数：<input id="input_lv_txt" type="text" value="-1.5" style="font-size: 20px; width: 60px">[?]</h3>
+        <h3>局所的な価数：<input id="input_lv_txt" type="text" value="-1.5" style="font-size: 20px; width: 60px">[C]</h3>
     </div>
     <div class="three">
         <h3>外部局所電位：<input id="input_lp_txt" type="text" value="5.0" style="font-size: 20px; width: 60px">[V]</h3>
     </div>
 </section>
+
+<div style="margin-left: 50px">
+    <img src="https://chart.googleapis.com/chart?cht=tx&chl=\frac{dT}{dt}=\frac{E^2e}{C_{\rm p}}n(T)M_{\rm n}(T)&chs=500" height="80px"><br>
+    <img src="https://chart.googleapis.com/chart?cht=tx&chl=n(T,P_{ {\rm O}_2},\phi)=N_0 B_0 (P_{ {\rm O}_2})^{-\frac{1}{6}} \exp\left(-\frac{\Delta H_{ {\rm V}_{\rm O}^{\bullet \bullet} } %2B zF\phi}{3RT}\right)&chs=500" height="80px"><br>
+    <img src="https://chart.googleapis.com/chart?cht=tx&chl=M_{\rm n}(T)=M_0 \exp\left(-\frac{E_{\rm M}}{RT}\right)&chs=500" height="80px">
+    <img src="https://chart.googleapis.com/chart?cht=tx&chl=B_0=\left[2\exp\left(\frac{\Delta S_{\rm V_O^{\bullet\bullet}}}{R}\right)\right]^{\frac{1}{3}}&chs=500" height="80px" style="margin-left: 50px"><br>
+    <div style="margin-left: 20px">
+        <img src="https://chart.googleapis.com/chart?cht=tx&chl=E&chs=500" height="20px">：外部電圧<br>
+        <img src="https://chart.googleapis.com/chart?cht=tx&chl=\Delta H_{ {\rm V}_{\rm O}^{\bullet \bullet} }&chs=500" height="25px">：空孔形成エネルギー<br>
+        <img src="https://chart.googleapis.com/chart?cht=tx&chl=P_{ {\rm O}_2}&chs=500" height="25px">：酸素分圧<br>
+        <img src="https://chart.googleapis.com/chart?cht=tx&chl=C_{\rm p}&chs=500" height="25px">：モル熱容量<br>
+        <img src="https://chart.googleapis.com/chart?cht=tx&chl=\Delta S_{\rm V_O^{\bullet\bullet}}&chs=500" height="25px">：空孔形成エントロピー<br>
+        <img src="https://chart.googleapis.com/chart?cht=tx&chl=M_0&chs=500" height="25px">：電子の移動度係数<br>
+        <img src="https://chart.googleapis.com/chart?cht=tx&chl=E_{\rm M}&chs=500" height="25px">：再配列エネルギー<br>
+        <img src="https://chart.googleapis.com/chart?cht=tx&chl=z&chs=500" height="20px">：局所的な価数<br>
+        <img src="https://chart.googleapis.com/chart?cht=tx&chl=\phi&chs=500" height="25px">：外部局所電位<br>
+    </div>
+</div>
 
 <datalist id="marks_ev">
     <option value="0"></option>

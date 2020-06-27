@@ -24,7 +24,7 @@ var dt = 1.0
 var ds = 0.01*dt
 
 func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molarVolume, electronDOS, formationEntropy,
-	mobilityCoef, rearrangeE, localValency, localPotential, heatingRate, semiBandGap, semiEDOS float64) {
+	mobilityCoef, rearrangeE, localValency, localPotential, heatingRate, semiBandGap, semiEDOS float64, enableVol bool) {
 	var Cp = heatCap //56.188 // モル熱容量
 	var vm0 = molarVolume //モル体積：2.02×10^-5[m^3/mol] (=123.233e-03/(6.10e+03))
 	var Cpv = Cp/vm0
@@ -54,14 +54,24 @@ func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molarVolu
 		tList = append(tList, TF - 273) //todo 初回のみの処理にしたい
 		for i := 1; i <= 100; i++ {
 			n1 := N0 * B0 * math.Pow(pO2, -1.0/6.0) * math.Exp(-(dHv+extPote)/(3.0*RR*T))
-			n2 := Neds * math.Exp(-Ebg/(2.0*RR*T))
+			n2 := 0.0
+			if enableVol {
+				n2 = Neds * math.Exp(-(Ebg-extPote)/(2.0*RR*T))
+			} else {
+				n2 = Neds * math.Exp(-Ebg/(2.0*RR*T))
+			}
 			Mn := M0 * math.Exp(-EM/(RR*T))
 			dTdt := vol * vol * E0 /Cpv * (n1 + n2) * Mn
 			T += dTdt * ds
 		}
 		if T <= TF { T = TF }
 		n1 := N0 * B0 * math.Pow(pO2, -1.0/6.0) * math.Exp(-(dHv+extPote)/(3.0*RR*T))
-		n2 := Neds * math.Exp(-Ebg/(2.0*RR*T))
+		n2 := 0.0
+		if enableVol {
+			n2 = Neds * math.Exp(-(Ebg-extPote)/(2.0*RR*T))
+		} else {
+			n2 = Neds * math.Exp(-Ebg/(2.0*RR*T))
+		}
 		Mn := M0 * math.Exp(-EM/(RR*T))
 		I := vol * E0 * (n1 + n2) * Mn
 		W := I * vol

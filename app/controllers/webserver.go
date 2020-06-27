@@ -44,6 +44,7 @@ func calcFlashHandler(w http.ResponseWriter, r *http.Request) {
 	heatingRate := r.URL.Query().Get("heating_rate")
 	semiBandGap := r.URL.Query().Get("semi_band_gap")
 	semiEDOS := r.URL.Query().Get("semi_EDOS")
+	enableVoltage := r.URL.Query().Get("enable_voltage")
 	ev, _ := strconv.ParseFloat(externalVoltage, 64)
 	ve, _ := strconv.ParseFloat(vacancyEnergy, 64)
 	pO2, _ := strconv.ParseFloat(oxygenPressure, 64)
@@ -58,11 +59,12 @@ func calcFlashHandler(w http.ResponseWriter, r *http.Request) {
 	hr, _ := strconv.ParseFloat(heatingRate, 64)
 	ebg, _ := strconv.ParseFloat(semiBandGap, 64)
 	neds, _ := strconv.ParseFloat(semiEDOS, 64)
-	log.Printf("ev=%g, ve=%g, pO2=%g, Cp=%g, mv=%g, eDOS=%g, fe=%g, mc=%g, re=%g, lv=%g, lp=%g, hr=%g, ebg=%g, neds=%g\n",
-		ev, ve, pO2, Cp, mv, eDOS, fe, mc, re, lv, lp, hr, ebg, neds)
+	enableVol, _ := strconv.ParseBool(enableVoltage)
+	log.Printf("ev=%g, ve=%g, pO2=%g, Cp=%g, mv=%g, eDOS=%g, fe=%g, mc=%g, re=%g, lv=%g, lp=%g, hr=%g, ebg=%g, neds=%g, enableVol=%t\n",
+		ev, ve, pO2, Cp, mv, eDOS, fe, mc, re, lv, lp, hr, ebg, neds, enableVol)
 
 	dff := new(models.DataFrameFlash)
-	dff.CalcW(ev, ve, pO2, Cp, mv, eDOS, fe, mc, re, lv, lp, hr, ebg, neds)
+	dff.CalcW(ev, ve, pO2, Cp, mv, eDOS, fe, mc, re, lv, lp, hr, ebg, neds, enableVol)
 	js, err := json.Marshal(dff)
 	if err != nil {
 		log.Printf("marshal error: %v", err)

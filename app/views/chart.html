@@ -45,6 +45,11 @@
             heatingRate:      0.167,
             semiBandGap:      4.824e+5 ,
             semiEDOS:         1.31e+28,
+            semiElectron: {
+                localVoltage: {
+                    enable: false,
+                },
+            },
             title: "Furnace temperature dependence of power dissipation in flash sintering.",
             hAxis: {
                 title: "Temperature /℃",
@@ -79,6 +84,7 @@
                 "heating_rate": config.heatingRate,
                 "semi_band_gap": config.semiBandGap,
                 "semi_EDOS": config.semiEDOS,
+                "enable_voltage": config.semiElectron.localVoltage.enable
             };
             $.get("/calc/flash/", params).done(function (data) {
                 var dataTable = new google.visualization.DataTable();
@@ -147,6 +153,11 @@
             $('#input_hr_txt, #input_hr_sld').change(function () { send_hr(this.value); });
             $('#input_ebg_txt, #input_ebg_sld').change(function () { send_ebg(this.value); });
             $('#input_neds_txt, #input_neds_sld').change(function () { send_neds(this.value); });
+
+            $('#localVoltage').change(function() {
+                config.semiElectron.localVoltage.enable = this.checked === true;
+                send();
+            });
         };
 
         function send_ev(num) {
@@ -378,6 +389,10 @@
         <input id="input_neds_txt" type="text" value="1.31e+28" class="input_txt">
     </div>
 </section>
+
+<div>
+    <input id="localVoltage" type="checkbox"> 真性半導体に起因する電子数において、局所的な電場エネルギーを考慮する
+</div>
 
 <div style="margin-left: 50px">
 {{/*    <h2 style="padding-top: 50px">フラッシュ焼結時に投入されるエネルギー</h2>*/}}

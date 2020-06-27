@@ -43,6 +43,7 @@
             rearrangeE:       1.89,
             localValency:     -1.5,
             localPotential:   5.0,
+            heatingRate:      0.167,
             title: "Furnace temperature dependence of power dissipation in flash sintering.",
             hAxis: {
                 title: "Temperature /℃",
@@ -75,6 +76,7 @@
                 "rearrange_energy": config.rearrangeE,
                 "local_valency": config.localValency,
                 "local_potential": config.localPotential,
+                "heating_rate": config.heatingRate,
             };
             $.get("/calc/flash/", params).done(function (data) {
                 var dataTable = new google.visualization.DataTable();
@@ -141,6 +143,7 @@
             $('#input_re_txt, #input_re_sld').change(function () { send_re(this.value); });
             $('#input_lv_txt, #input_lv_sld').change(function () { send_lv(this.value); });
             $('#input_lp_txt, #input_lp_sld').change(function () { send_lp(this.value); });
+            $('#input_hr_txt, #input_hr_sld').change(function () { send_hr(this.value); });
         };
 
         function send_ev(num) {
@@ -215,6 +218,12 @@
             document.getElementById('input_lp_sld').value = num;
             send();
         }
+        function send_hr(num) {
+            config.heatingRate = num;
+            document.getElementById('output_hr').value = num;
+            document.getElementById('input_hr_sld').value = num;
+            send();
+        }
         function changing_ev(num) {
             document.getElementById('output_ev').value = num;
             document.getElementById('input_ev_txt').value = num;
@@ -262,6 +271,10 @@
         function changing_lp(num) {
             document.getElementById('output_lp').value = num;
             document.getElementById('input_lp_txt').value = num;
+        }
+        function changing_hr(num) {
+            document.getElementById('output_hr').value = num;
+            document.getElementById('input_hr_txt').value = num;
         }
     </script>
 </head>
@@ -338,6 +351,14 @@
         <h3>外部局所電位：<output id="output_lp">5.0</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}]&chs=500" height="16px" style="margin-left: 10px"></h3>
         <input id="input_lp_sld" type="range" value="5.0" min="0" max="10" step="0.01" style="margin-left: 10px" oninput="changing_lp(this.value)">
         <input id="input_lp_txt" type="text" value="5.0" class="input_txt">
+    </div>
+</section>
+
+<section class="column3">
+    <div class="one">
+        <h3>昇温速度：<output id="output_hr">0.167</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm K}/{\rm s}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_hr_sld" type="range" value="0.167" min="0" max="1" step="0.001" style="margin-left: 10px" oninput="changing_hr(this.value)">
+        <input id="input_hr_txt" type="text" value="0.167" class="input_txt">
     </div>
 </section>
 

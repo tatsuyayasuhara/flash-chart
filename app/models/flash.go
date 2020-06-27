@@ -21,11 +21,10 @@ const FF float64 = 96485.33289 // [C/mol]
 const E0 float64 = 1.6021766208e-19 // [C]
 var nd = NDP - 1
 var dt = 1.0
-var dTFdt = 1.0/6.0
 var ds = 0.01*dt
 
 func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molWeight, density, electronDOS,
-	formationEntropy, mobilityCoef, rearrangeE, localValency, localPotential float64) {
+	formationEntropy, mobilityCoef, rearrangeE, localValency, localPotential, heatingRate float64) {
 	var Cp = heatCap //56.188 // モル熱容量
 	var Mw = molWeight*1e-03 //123.233e-03 // 分子量 [kg/mol]
 	var den = density*1e+03 //6.10e+03 // 密度
@@ -41,6 +40,7 @@ func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molWeight
 	var phi = localPotential //5.0       // 外部局所電位(電場ポテンシャル)
 	var zp = zz*phi
 	var extPote = zp*FF // [J/mol]
+	dTFdt := heatingRate // 1.0/6.0[K/s]
 
 	TF := 773.0
 	T := TF

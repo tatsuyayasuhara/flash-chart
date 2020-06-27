@@ -35,8 +35,7 @@
             vacancyEnergy:    3.956e+5,
             oxygenPressure:   0.21,
             heatCapacity:     56.188,
-            molWeight:        123.233,
-            density:          6.10,
+            molarVolume:      2.02e-5,
             electronDOS:      7.0e+20,
             formationEntropy: 8.3145,
             mobilityCoef:     8.02e-02,
@@ -70,8 +69,7 @@
                 "vacancy_energy": config.vacancyEnergy,
                 "oxygen_pressure": config.oxygenPressure,
                 "heat_capacity": config.heatCapacity,
-                "mol_weight": config.molWeight,
-                "density": config.density,
+                "molar_volume": config.molarVolume,
                 "electron_DOS": config.electronDOS,
                 "formation_entropy": config.formationEntropy,
                 "mobility_coef": config.mobilityCoef,
@@ -139,8 +137,7 @@
             $('#input_ve_txt, #input_ve_sld').change(function () { send_ve(this.value); });
             $('#input_pO2_txt, #input_pO2_sld').change(function () { send_pO2(this.value); });
             $('#input_cp_txt, #input_cp_sld').change(function () { send_cp(this.value); });
-            $('#input_mw_txt, #input_mw_sld').change(function () { send_mw(this.value); });
-            $('#input_den_txt, #input_den_sld').change(function () { send_den(this.value); });
+            $('#input_mv_txt, #input_mv_sld').change(function () { send_mv(this.value); });
             $('#input_eDOS_txt, #input_eDOS_sld').change(function () { send_eDOS(this.value); });
             $('#input_fe_txt, #input_fe_sld').change(function () { send_fe(this.value); });
             $('#input_mc_txt, #input_mc_sld').change(function () { send_mc(this.value); });
@@ -176,16 +173,10 @@
             document.getElementById('input_cp_sld').value = num;
             send();
         }
-        function send_mw(num) {
-            config.molWeight = num;
-            document.getElementById('output_mw').value = num;
-            document.getElementById('input_mw_sld').value = num;
-            send();
-        }
-        function send_den(num) {
-            config.density = num;
-            document.getElementById('output_den').value = num;
-            document.getElementById('input_den_sld').value = num;
+        function send_mv(num) {
+            config.molarVolume = num;
+            document.getElementById('output_mv').value = num;
+            document.getElementById('input_mv_sld').value = num;
             send();
         }
         function send_eDOS(num) {
@@ -258,13 +249,9 @@
             document.getElementById('output_cp').value = num;
             document.getElementById('input_cp_txt').value = num;
         }
-        function changing_mw(num) {
-            document.getElementById('output_mw').value = num;
-            document.getElementById('input_mw_txt').value = num;
-        }
-        function changing_den(num) {
-            document.getElementById('output_den').value = num;
-            document.getElementById('input_den_txt').value = num;
+        function changing_mv(num) {
+            document.getElementById('output_mv').value = num;
+            document.getElementById('input_mv_txt').value = num;
         }
         function changing_eDOS(num) {
             document.getElementById('output_eDOS').value = num;
@@ -332,14 +319,9 @@
         <input id="input_cp_txt" type="text" value="56.188" class="input_txt">
     </div>
     <div class="two">
-        <h3>分子量：<output id="output_mw">123.233</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm g}/{\rm mol}]&chs=500" height="16px" style="margin-left: 10px"></h3>
-        <input id="input_mw_sld" type="range" value="123.233" min="0" max="200" step="0.001" style="margin-left: 10px" oninput="changing_mw(this.value)">
-        <input id="input_mw_txt" type="text" value="123.233" class="input_txt">
-    </div>
-    <div class="three">
-        <h3>密度：<output id="output_den">6.10</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm g}/{\rm cm^3}]&chs=500" height="16px" style="margin-left: 10px"></h3>
-        <input id="input_den_sld" type="range" value="6.10" min="0" max="20" step="0.01" style="margin-left: 10px" oninput="changing_den(this.value)">
-        <input id="input_den_txt" type="text" value="6.10" class="input_txt">
+        <h3>モル体積：<output id="output_mv">2.02e-5</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^3}/{\rm mol}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_mv_sld" type="range" value="2.02e-5" min="1e-5" max="3e-5" step="1e-6" style="margin-left: 10px" oninput="changing_mv(this.value)">
+        <input id="input_mv_txt" type="text" value="2.02e-5" class="input_txt">
     </div>
 </section>
 
@@ -398,7 +380,7 @@
 </section>
 
 <div style="margin-left: 50px">
-    <h2 style="padding-top: 50px">フラッシュ焼結時に投入されるエネルギー</h2>
+{{/*    <h2 style="padding-top: 50px">フラッシュ焼結時に投入されるエネルギー</h2>*/}}
     <img src="https://chart.googleapis.com/chart?cht=tx&chl=W[T(t)]=E^2en(T,P_{ {\rm O}_2},\phi)M_{\rm n}(T)&chs=500" height="50px"><br>
     <img src="https://chart.googleapis.com/chart?cht=tx&chl=T(t%2B\Delta s)=T(t)%2B\left(\frac{dT}{dt}\right)_t \Delta s=T(t)%2B\frac{E^2e}{C_{\rm p}}n(T,P_{ {\rm O}_2},\phi)M_{\rm n}(T)\Delta s&chs=500" height="80px"><br>
     <img src="https://chart.googleapis.com/chart?cht=tx&chl=n(T,P_{ {\rm O}_2},\phi)=N_0 B_0 (P_{ {\rm O}_2})^{-\frac{1}{6}} \exp\left(-\frac{\Delta H_{ {\rm V}_{\rm O}^{\bullet \bullet} } %2B zF\phi}{3RT}\right)&chs=500" height="80px"><br>

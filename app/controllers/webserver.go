@@ -34,8 +34,7 @@ func calcFlashHandler(w http.ResponseWriter, r *http.Request) {
 	vacancyEnergy := r.URL.Query().Get("vacancy_energy")
 	oxygenPressure := r.URL.Query().Get("oxygen_pressure")
 	heatCapacity := r.URL.Query().Get("heat_capacity")
-	molWeight := r.URL.Query().Get("mol_weight")
-	density := r.URL.Query().Get("density")
+	molarVolume := r.URL.Query().Get("molar_volume")
 	electronDOS := r.URL.Query().Get("electron_DOS")
 	formationEntropy := r.URL.Query().Get("formation_entropy")
 	mobilityCoef := r.URL.Query().Get("mobility_coef")
@@ -49,8 +48,7 @@ func calcFlashHandler(w http.ResponseWriter, r *http.Request) {
 	ve, _ := strconv.ParseFloat(vacancyEnergy, 64)
 	pO2, _ := strconv.ParseFloat(oxygenPressure, 64)
 	Cp, _ := strconv.ParseFloat(heatCapacity, 64)
-	mw, _ := strconv.ParseFloat(molWeight, 64)
-	den, _ := strconv.ParseFloat(density, 64)
+	mv, _ := strconv.ParseFloat(molarVolume, 64)
 	eDOS, _ := strconv.ParseFloat(electronDOS, 64)
 	fe, _ := strconv.ParseFloat(formationEntropy, 64)
 	mc, _ := strconv.ParseFloat(mobilityCoef, 64)
@@ -60,11 +58,11 @@ func calcFlashHandler(w http.ResponseWriter, r *http.Request) {
 	hr, _ := strconv.ParseFloat(heatingRate, 64)
 	ebg, _ := strconv.ParseFloat(semiBandGap, 64)
 	neds, _ := strconv.ParseFloat(semiEDOS, 64)
-	log.Printf("ev=%g, ve=%g, pO2=%g, Cp=%g, mw=%g, den=%g, eDOS=%g, fe=%g, mc=%g, re=%g, lv=%g, lp=%g, hr=%g, ebg=%g, neds=%g\n",
-		ev, ve, pO2, Cp, mw, den, eDOS, fe, mc, re, lv, lp, hr, ebg, neds)
+	log.Printf("ev=%g, ve=%g, pO2=%g, Cp=%g, mv=%g, eDOS=%g, fe=%g, mc=%g, re=%g, lv=%g, lp=%g, hr=%g, ebg=%g, neds=%g\n",
+		ev, ve, pO2, Cp, mv, eDOS, fe, mc, re, lv, lp, hr, ebg, neds)
 
 	dff := new(models.DataFrameFlash)
-	dff.CalcW(ev, ve, pO2, Cp, mw, den, eDOS, fe, mc, re, lv, lp, hr, ebg, neds)
+	dff.CalcW(ev, ve, pO2, Cp, mv, eDOS, fe, mc, re, lv, lp, hr, ebg, neds)
 	js, err := json.Marshal(dff)
 	if err != nil {
 		log.Printf("marshal error: %v", err)

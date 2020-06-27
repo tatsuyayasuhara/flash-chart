@@ -24,7 +24,7 @@ var dt = 1.0
 var ds = 0.01*dt
 
 func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molWeight, density, electronDOS,
-	formationEntropy, mobilityCoef, rearrangeE, localValency, localPotential, heatingRate float64) {
+	formationEntropy, mobilityCoef, rearrangeE, localValency, localPotential, heatingRate, semiBandGap, semiEDOS float64) {
 	var Cp = heatCap //56.188 // モル熱容量
 	var Mw = molWeight*1e-03 //123.233e-03 // 分子量 [kg/mol]
 	var den = density*1e+03 //6.10e+03 // 密度
@@ -41,6 +41,8 @@ func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molWeight
 	var zp = zz*phi
 	var extPote = zp*FF // [J/mol]
 	dTFdt := heatingRate // 1.0/6.0[K/s]
+	Ebg := semiBandGap //4.824×10^5 [J/mol] (=5.0×96485.33289) 真性半導体におけるバンドギャップ
+	Neds := semiEDOS //1.31e+28[m-3] 真性半導体における電子の状態密度
 
 	TF := 773.0
 	T := TF
@@ -55,14 +57,16 @@ func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molWeight
 		tList = append(tList, TF - 273) //todo 初回のみの処理にしたい
 		for i := 1; i <= 100; i++ {
 			n1 := N0 * B0 * math.Pow(pO2, -1.0/6.0) * math.Exp(-(dHv+extPote)/(3.0*RR*T))
+			n2 := Neds * math.Exp(-Ebg/(2.0*RR*T))
 			Mn := M0 * math.Exp(-EM/(RR*T))
-			dTdt := vol * vol * E0 /Cpv * n1 * Mn
+			dTdt := vol * vol * E0 /Cpv * (n1 + n2) * Mn
 			T += dTdt * ds
 		}
 		if T <= TF { T = TF }
 		n1 := N0 * B0 * math.Pow(pO2, -1.0/6.0) * math.Exp(-(dHv+extPote)/(3.0*RR*T))
+		n2 := Neds * math.Exp(-Ebg/(2.0*RR*T))
 		Mn := M0 * math.Exp(-EM/(RR*T))
-		I := vol * E0 * n1 * Mn
+		I := vol * E0 * (n1 + n2) * Mn
 		W := I * vol
 		wList = append(wList, W)
 	}

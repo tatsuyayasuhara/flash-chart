@@ -44,6 +44,8 @@
             localValency:     -1.5,
             localPotential:   5.0,
             heatingRate:      0.167,
+            semiBandGap:      4.824e+5 ,
+            semiEDOS:         1.31e+28,
             title: "Furnace temperature dependence of power dissipation in flash sintering.",
             hAxis: {
                 title: "Temperature /℃",
@@ -77,6 +79,8 @@
                 "local_valency": config.localValency,
                 "local_potential": config.localPotential,
                 "heating_rate": config.heatingRate,
+                "semi_band_gap": config.semiBandGap,
+                "semi_EDOS": config.semiEDOS,
             };
             $.get("/calc/flash/", params).done(function (data) {
                 var dataTable = new google.visualization.DataTable();
@@ -144,6 +148,8 @@
             $('#input_lv_txt, #input_lv_sld').change(function () { send_lv(this.value); });
             $('#input_lp_txt, #input_lp_sld').change(function () { send_lp(this.value); });
             $('#input_hr_txt, #input_hr_sld').change(function () { send_hr(this.value); });
+            $('#input_ebg_txt, #input_ebg_sld').change(function () { send_ebg(this.value); });
+            $('#input_neds_txt, #input_neds_sld').change(function () { send_neds(this.value); });
         };
 
         function send_ev(num) {
@@ -224,6 +230,18 @@
             document.getElementById('input_hr_sld').value = num;
             send();
         }
+        function send_ebg(num) {
+            config.semiBandGap = num;
+            document.getElementById('output_ebg').value = num;
+            document.getElementById('input_ebg_sld').value = num;
+            send();
+        }
+        function send_neds(num) {
+            config.semiEDOS = num;
+            document.getElementById('output_neds').value = num;
+            document.getElementById('input_neds_sld').value = num;
+            send();
+        }
         function changing_ev(num) {
             document.getElementById('output_ev').value = num;
             document.getElementById('input_ev_txt').value = num;
@@ -275,6 +293,13 @@
         function changing_hr(num) {
             document.getElementById('output_hr').value = num;
             document.getElementById('input_hr_txt').value = num;
+        }
+        function changing_ebg(num) {
+            document.getElementById('output_ebg').value = num;
+            document.getElementById('input_ebg_txt').value = num;
+        }function changing_neds(num) {
+            document.getElementById('output_neds').value = num;
+            document.getElementById('input_neds_txt').value = num;
         }
     </script>
 </head>
@@ -359,6 +384,16 @@
         <h3>昇温速度：<output id="output_hr">0.167</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm K}/{\rm s}]&chs=500" height="16px" style="margin-left: 10px"></h3>
         <input id="input_hr_sld" type="range" value="0.167" min="0" max="1" step="0.001" style="margin-left: 10px" oninput="changing_hr(this.value)">
         <input id="input_hr_txt" type="text" value="0.167" class="input_txt">
+    </div>
+    <div class="two">
+        <h3>真性半導体におけるBG：<output id="output_ebg">4.824e+5</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm mol}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_ebg_sld" type="range" value="4.824e+5" min="1e+5" max="1e+6" step="1e+4" style="margin-left: 10px" oninput="changing_ebg(this.value)">
+        <input id="input_ebg_txt" type="text" value="4.824e+5" class="input_txt">
+    </div>
+    <div class="three">
+        <h3>真性半導体におけるDOS：<output id="output_neds">1.31e+28</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^{-3}}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_neds_sld" type="range" value="1.31e+28" min="1e+24" max="1e+29" step="1e+24" style="margin-left: 10px" oninput="changing_neds(this.value)">
+        <input id="input_neds_txt" type="text" value="1.31e+28" class="input_txt">
     </div>
 </section>
 

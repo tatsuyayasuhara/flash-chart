@@ -34,10 +34,9 @@ func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molWeight
 	var dSv = formationEntropy //RR // 酸素イオン空孔の形成エントロピー
 	var B0 = math.Pow(2.0 * math.Exp(dSv/RR), 1.0/3.0)
 	var M0 = mobilityCoef //8.02e-02   // 温度の関数の場合もある
-	var dE = rearrangeE //1.89       // [eV] エネルギー障壁的なもの？再配列エネルギー？
-	var EM = dE*FF
-	var zz = localValency //-1.5       // 局所的な価数(電荷)
-	var phi = localPotential //5.0       // 外部局所電位(電場ポテンシャル)
+	var EM = rearrangeE //電子のホッピング伝導における活性化エネルギー：1.824×10^5 [J/mol]　(=1.89×96485.33289)
+	var zz = localValency //-3       // 局所的な価数(電荷)
+	var phi = localPotential //3.75       // 外部局所電位(電場ポテンシャル)
 	var zp = zz*phi
 	var extPote = zp*FF // [J/mol]
 	dTFdt := heatingRate // 1.0/6.0[K/s]
@@ -48,7 +47,7 @@ func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molWeight
 	T := TF
 	// 外部入力3項
 	vol := voltage
-	dHv := vacancyE * FF
+	dHv := vacancyE
 	pO2 := pressure
 	var tList []float64
 	var wList []float64

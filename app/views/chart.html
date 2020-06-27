@@ -31,8 +31,8 @@
         google.charts.load('current', {packages: ['corechart', 'line']});
 
         var config = {
-            externalVoltage:  9000,
-            vacancyEnergy:    4.1,
+            externalVoltage:  40e+2,
+            vacancyEnergy:    3.956e+5,
             oxygenPressure:   0.21,
             heatCapacity:     56.188,
             molWeight:        123.233,
@@ -40,9 +40,9 @@
             electronDOS:      7.0e+20,
             formationEntropy: 8.3145,
             mobilityCoef:     8.02e-02,
-            rearrangeE:       1.89,
-            localValency:     -1.5,
-            localPotential:   5.0,
+            rearrangeE:       1.824e+5,
+            localValency:     -2,
+            localPotential:   3.75,
             heatingRate:      0.167,
             semiBandGap:      4.824e+5 ,
             semiEDOS:         1.31e+28,
@@ -309,17 +309,17 @@
 
 <section class="column3">
     <div class="one">
-        <h3>外部電圧：<output id="output_ev">9000</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}/{\rm m}]&chs=500" height="16px" style="margin-left: 10px"><br></h3>
-        <input id="input_ev_sld" type="range" value="9000" min="0" max="20000" step="100" style="margin-left: 10px" oninput="changing_ev(this.value)">
-        <input id="input_ev_txt" type="text" value="9000" class="input_txt">
+        <h3>外部電圧：<output id="output_ev">40e+2</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}/{\rm m}]&chs=500" height="16px" style="margin-left: 10px"><br></h3>
+        <input id="input_ev_sld" type="range" value="40e+2" min="0" max="20000" step="100" style="margin-left: 10px" oninput="changing_ev(this.value)">
+        <input id="input_ev_txt" type="text" value="40e+2" class="input_txt">
     </div>
     <div class="two">
-        <h3>空孔形成エネルギー：<output id="output_ve">4.1</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm eV}]&chs=500" height="16px" style="margin-left: 10px"><br></h3>
-        <input id="input_ve_sld" type="range" value="4.1" min="3" max="5.5" step="0.01" style="margin-left: 10px" oninput="changing_ve(this.value)">
-        <input id="input_ve_txt" type="text" value="4.1" class="input_txt">
+        <h3>空孔形成エネルギー：<output id="output_ve">3.956e+5</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm mol}]&chs=500" height="16px" style="margin-left: 10px"><br></h3>
+        <input id="input_ve_sld" type="range" value="3.956e+5" min="2e+5" max="6e+5" step="1e+3" style="margin-left: 10px" oninput="changing_ve(this.value)">
+        <input id="input_ve_txt" type="text" value="3.956e+5" class="input_txt">
     </div>
     <div class="three">
-        <h3>酸素分圧：<output id="output_pO2">0.21</output><br></h3>
+        <h3>酸素分圧：<output id="output_pO2">0.21</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm bar}]&chs=500" height="16px" style="margin-left: 10px"></h3>
         <input id="input_pO2_sld" type="range" value="0.21" min="0" max="0.3" step="0.00001" style="margin-left: 10px" oninput="changing_pO2(this.value)">
         <input id="input_pO2_txt" type="text" value="0.21" class="input_txt">
     </div>
@@ -327,7 +327,7 @@
 
 <section class="column3">
     <div class="one">
-        <h3>モル熱容量：<output id="output_cp">56.188</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm molK}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <h3>モル熱容量：<output id="output_cp">56.188</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm K\cdot mol}]&chs=500" height="16px" style="margin-left: 10px"></h3>
         <input id="input_cp_sld" type="range" value="56.188" min="0" max="100" step="0.001" style="margin-left: 10px" oninput="changing_cp(this.value)">
         <input id="input_cp_txt" type="text" value="56.188" class="input_txt">
     </div>
@@ -346,36 +346,36 @@
 <section class="column3">
     <div class="one">
         <h3>電子の有効状態密度：<output id="output_eDOS">7.0e+20</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^{-3}}]&chs=500" height="16px" style="margin-left: 10px"></h3>
-        <input id="input_eDOS_sld" type="range" value="7.0e+20" min="7.0e+18" max="7.0e+21" step="1e+18" style="margin-left: 10px" oninput="changing_eDOS(this.value)">
+        <input id="input_eDOS_sld" type="range" value="7.0e+20" min="1e+20" max="20e+20" step="1e+19" style="margin-left: 10px" oninput="changing_eDOS(this.value)">
         <input id="input_eDOS_txt" type="text" value="7.0e+20" class="input_txt">
     </div>
     <div class="two">
-        <h3>空孔形成エントロピー：<output id="output_fe">8.3145</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm K}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <h3>空孔形成エントロピー：<output id="output_fe">8.3145</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm K\cdot mol}]&chs=500" height="16px" style="margin-left: 10px"></h3>
         <input id="input_fe_sld" type="range" value="8.3145" min="0" max="20" step="0.0001" style="margin-left: 10px" oninput="changing_fe(this.value)">
         <input id="input_fe_txt" type="text" value="8.3145" class="input_txt">
     </div>
     <div class="three">
         <h3>移動度係数(関数)：<output id="output_mc">8.02e-02</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^2}/{\rm Vs}]&chs=500" height="16px" style="margin-left: 10px"></h3>
-        <input id="input_mc_sld" type="range" value="8.02e-02" min="0" max="1e+0" step="0.0001" style="margin-left: 10px" oninput="changing_mc(this.value)">
+        <input id="input_mc_sld" type="range" value="8.02e-02" min="1e-2" max="20e-2" step="1e-3" style="margin-left: 10px" oninput="changing_mc(this.value)">
         <input id="input_mc_txt" type="text" value="8.02e-02" class="input_txt">
     </div>
 </section>
 
 <section class="column3">
     <div class="one">
-        <h3>再配向エネルギー：<output id="output_re">1.89</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm eV}]&chs=500" height="16px" style="margin-left: 10px"></h3>
-        <input id="input_re_sld" type="range" value="1.89" min="0" max="4" step="0.001" style="margin-left: 10px" oninput="changing_re(this.value)">
-        <input id="input_re_txt" type="text" value="1.89" class="input_txt">
+        <h3>再配向エネルギー：<output id="output_re">1.824e+5</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm mol}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_re_sld" type="range" value="1.824e+5" min="1e+5" max="3e+5" step="1e+4" style="margin-left: 10px" oninput="changing_re(this.value)">
+        <input id="input_re_txt" type="text" value="1.824e+5" class="input_txt">
     </div>
     <div class="two">
-        <h3>局所的な価数：<output id="output_lv">-1.5</output></h3>
-        <input id="input_lv_sld" type="range" value="-1.5" min="-2" max="0" step="0.01" style="margin-left: 10px" oninput="changing_lv(this.value)">
-        <input id="input_lv_txt" type="text" value="-1.5" class="input_txt">
+        <h3>局所的な価数：<output id="output_lv">-2</output></h3>
+        <input id="input_lv_sld" type="range" value="-2" min="-3" max="-1" step="0.1" style="margin-left: 10px" oninput="changing_lv(this.value)">
+        <input id="input_lv_txt" type="text" value="-2" class="input_txt">
     </div>
     <div class="three">
-        <h3>外部局所電位：<output id="output_lp">5.0</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}]&chs=500" height="16px" style="margin-left: 10px"></h3>
-        <input id="input_lp_sld" type="range" value="5.0" min="0" max="10" step="0.01" style="margin-left: 10px" oninput="changing_lp(this.value)">
-        <input id="input_lp_txt" type="text" value="5.0" class="input_txt">
+        <h3>外部局所電位：<output id="output_lp">3.75</output><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}]&chs=500" height="16px" style="margin-left: 10px"></h3>
+        <input id="input_lp_sld" type="range" value="3.75" min="0" max="5" step="0.01" style="margin-left: 10px" oninput="changing_lp(this.value)">
+        <input id="input_lp_txt" type="text" value="3.75" class="input_txt">
     </div>
 </section>
 

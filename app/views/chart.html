@@ -6,7 +6,60 @@
     <style>
         .input_txt{
             width: 100px;
-            margin-left: 5px
+        }
+        body {
+            font-family: "Open Sans", sans-serif;
+            line-height: 1.25;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+            padding: 0;
+            width: 700px;
+            box-shadow: 0 0 15px -6px #00000073;
+        }
+        table tr {
+            background-color: #fff;
+        }
+        table tbody tr:hover{
+            background-color: #fffae9;
+        }
+        table th,
+        table td {
+            padding: .35em 1em;
+            border-bottom: 1px solid #eee;
+        }
+        table thead th {
+            font-size: .85em;
+            padding: 1em;
+        }
+        table thead tr{
+            background-color: #264eff;
+            color:#fff;
+        }
+        table tbody th {
+            text-align: left;
+            font-size: .8em;
+        }
+        .txt{
+            text-align: left;
+            font-size: .75em;
+            width: 45%;
+            font-weight: bold;
+        }
+        .input_num{
+            width: 20%;
+        }
+        .unit{
+            text-align: right;
+            width: 12%;
+        }
+        .slider_bar{
+            width: 23%;
+        }
+        @media screen and (max-width: 600px) {
+            table{width: 100%;}
         }
     </style>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -262,92 +315,116 @@
 
 <div id="chart_div" style="width: 100%; height: 800px; margin: auto"></div>
 
-<div style="margin-left: 50px; margin-bottom: 50px">
-    <div>
-        <div>プロセスパラメータ</div>
-        <div style="margin-left: 16px">
-            <div>
-                <div style="float: left;">外部電圧：</div>
-                <div style="float: left; width: 160px"><input id="input_ev_txt" type="text" value="40e+2" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}/{\rm m}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_ev_sld" type="range" value="40e+2" min="0" max="20000" step="100" style="margin-left: 10px;" oninput="changing_ev(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left;">昇温速度：</div>
-                <div style="float: left; width: 160px"><input id="input_hr_txt" type="text" value="0.167" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm K}/{\rm s}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_hr_sld" type="range" value="0.167" min="0" max="1" step="0.001" style="margin-left: 10px" oninput="changing_hr(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left;">局所価数：</div>
-                <div style="float: left; width: 160px"><input id="input_lv_txt" type="text" value="-2" class="input_txt"></div>
-                <div style="float: left"><input id="input_lv_sld" type="range" value="-2" min="-3" max="-1" step="0.1" style="margin-left: 10px" oninput="changing_lv(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left;">局所電位：</div>
-                <div style="float: left; width: 160px"><input id="input_lp_txt" type="text" value="3.75" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_lp_sld" type="range" value="3.75" min="0" max="5" step="0.01" style="margin-left: 10px" oninput="changing_lp(this.value)"></div>
-            </div>
-        </div>
-    </div>
+<table>
+    <thead>
+    <tr>
+        <th colspan="4">プロセスパラメータ</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th class="txt">外部電圧</th>
+        <td class="input_num"><input id="input_ev_txt" type="text" value="40e+2" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}/{\rm m}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_ev_sld" type="range" value="40e+2" min="0" max="20000" step="100" oninput="changing_ev(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">昇温速度</th>
+        <td class="input_num"><input id="input_hr_txt" type="text" value="0.167" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm K}/{\rm s}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_hr_sld" type="range" value="0.167" min="0" max="1" step="0.001" oninput="changing_hr(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">局所価数</th>
+        <td class="input_num"><input id="input_lv_txt" type="text" value="-2" class="input_txt"></td>
+        <td class="unit"></td>
+        <td class="slider_bar"><input id="input_lv_sld" type="range" value="-2" min="-3" max="-1" step="0.1" oninput="changing_lv(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">局所電位</th>
+        <td class="input_num"><input id="input_lp_txt" type="text" value="3.75" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm V}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_lp_sld" type="range" value="3.75" min="0" max="5" step="0.01" oninput="changing_lp(this.value)"></td>
+    </tr>
+    </tbody>
+</table><br>
 
-    <div style="clear: left">
-        <div>物質パラメータ</div>
-        <div style="margin-left: 16px">
-            <div>
-                <div style="float: left; width: 370px;">酸素分圧：</div>
-                <div style="float: left; width: 180px;"><input id="input_pO2_txt" type="text" value="0.21" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm bar}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_pO2_sld" type="range" value="0.21" min="0" max="0.3" step="0.00001" style="margin-left: 10px" oninput="changing_pO2(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left; width: 370px;">定圧モル熱容量：</div>
-                <div style="float: left; width: 180px;"><input id="input_cp_txt" type="text" value="56.188" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm K\cdot mol}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_cp_sld" type="range" value="56.188" min="0" max="100" step="0.001" style="margin-left: 10px" oninput="changing_cp(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left; width: 370px;">モル体積：</div>
-                <div style="float: left; width: 180px;"><input id="input_mv_txt" type="text" value="2.02e-5" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^3}/{\rm mol}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_mv_sld" type="range" value="2.02e-5" min="1e-5" max="3e-5" step="1e-6" style="margin-left: 10px" oninput="changing_mv(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left; width: 370px;">酸素イオン空孔の形成エンタルピー：</div>
-                <div style="float: left; width: 180px;"><input id="input_ve_txt" type="text" value="3.956e+5" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm mol}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_ve_sld" type="range" value="3.956e+5" min="2e+5" max="6e+5" step="1e+3" style="margin-left: 10px" oninput="changing_ve(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left; width: 370px;">酸素イオン空孔の形成エントロピー：</div>
-                <div style="float: left; width: 180px;"><input id="input_fe_txt" type="text" value="8.3145" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm K\cdot mol}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_fe_sld" type="range" value="8.3145" min="0" max="20" step="0.0001" style="margin-left: 10px" oninput="changing_fe(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left; width: 370px;">電子のホッピング伝導における頻度因子：</div>
-                <div style="float: left; width: 180px;"><input id="input_mc_txt" type="text" value="8.02e-02" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^2}/{\rm Vs}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_mc_sld" type="range" value="8.02e-02" min="1e-2" max="20e-2" step="1e-3" style="margin-left: 10px" oninput="changing_mc(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left; width: 370px;">電子のホッピング伝導における活性化エネルギー：</div>
-                <div style="float: left; width: 180px;"><input id="input_re_txt" type="text" value="1.824e+5" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm mol}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_re_sld" type="range" value="1.824e+5" min="1e+5" max="3e+5" step="1e+4" style="margin-left: 10px" oninput="changing_re(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left; width: 370px;">単位体積当たりの電子の有効状態密度：</div>
-                <div style="float: left; width: 180px;"><input id="input_eDOS_txt" type="text" value="7.0e+20" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^{-3}}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_eDOS_sld" type="range" value="7.0e+20" min="1e+20" max="20e+20" step="1e+19" style="margin-left: 10px" oninput="changing_eDOS(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left; width: 370px;">真性半導体におけるバンドギャップ：</div>
-                <div style="float: left; width: 180px;"><input id="input_ebg_txt" type="text" value="4.824e+5" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm mol}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_ebg_sld" type="range" value="4.824e+5" min="1e+5" max="1e+6" step="1e+4" style="margin-left: 10px" oninput="changing_ebg(this.value)"></div>
-            </div>
-            <div>
-                <div style="clear: left; float: left; width: 370px;">真性半導体における電子の状態密度：</div>
-                <div style="float: left; width: 180px;"><input id="input_neds_txt" type="text" value="1.31e+28" class="input_txt"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^{-3}}]&chs=500" height="12px" style="margin-left: 10px"></div>
-                <div style="float: left"><input id="input_neds_sld" type="range" value="1.31e+28" min="0" max="1e+29" step="1e+24" style="margin-left: 10px" oninput="changing_neds(this.value)"></div>
-            </div>
-            <div style="clear: left; margin-left: 16px">
-                <input id="localVoltage" type="checkbox"> 真性半導体に起因する電子数に局所的な電場エネルギーを考慮する
-            </div>
-        </div>
-    </div>
-</div>
+<table>
+    <thead>
+    <tr>
+        <th colspan="4">物質パラメータ</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th class="txt">酸素分圧</th>
+        <td class="input_num"><input id="input_pO2_txt" type="text" value="0.21" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm bar}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_pO2_sld" type="range" value="0.21" min="0" max="0.3" step="0.00001" oninput="changing_pO2(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">定圧モル熱容量</th>
+        <td class="input_num"><input id="input_cp_txt" type="text" value="56.188" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm K\cdot mol}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_cp_sld" type="range" value="56.188" min="0" max="100" step="0.001" oninput="changing_cp(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">モル体積</th>
+        <td class="input_num"><input id="input_mv_txt" type="text" value="2.02e-5" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^3}/{\rm mol}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_mv_sld" type="range" value="2.02e-5" min="1e-5" max="3e-5" step="1e-6" oninput="changing_mv(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">酸素イオン空孔の形成エンタルピー</th>
+        <td class="input_num"><input id="input_ve_txt" type="text" value="3.956e+5" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm mol}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_ve_sld" type="range" value="3.956e+5" min="2e+5" max="6e+5" step="1e+3" oninput="changing_ve(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">酸素イオン空孔の形成エントロピー</th>
+        <td class="input_num"><input id="input_fe_txt" type="text" value="8.3145" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm K\cdot mol}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_fe_sld" type="range" value="8.3145" min="0" max="20" step="0.0001" oninput="changing_fe(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">電子のホッピング伝導における頻度因子</th>
+        <td class="input_num"><input id="input_mc_txt" type="text" value="8.02e-02" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^2}/{\rm Vs}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_mc_sld" type="range" value="8.02e-02" min="1e-2" max="20e-2" step="1e-3" oninput="changing_mc(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">電子のホッピング伝導における活性化エネルギー</th>
+        <td class="input_num"><input id="input_re_txt" type="text" value="1.824e+5" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm mol}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_re_sld" type="range" value="1.824e+5" min="1e+5" max="3e+5" step="1e+4" oninput="changing_re(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">単位体積当たりの電子の有効状態密度</th>
+        <td class="input_num"><input id="input_eDOS_txt" type="text" value="7.0e+20" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^{-3}}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_eDOS_sld" type="range" value="7.0e+20" min="1e+20" max="20e+20" step="1e+19" oninput="changing_eDOS(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">真性半導体におけるバンドギャップ</th>
+        <td class="input_num"><input id="input_ebg_txt" type="text" value="4.824e+5" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm J}/{\rm mol}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_ebg_sld" type="range" value="4.824e+5" min="1e+5" max="1e+6" step="1e+4" oninput="changing_ebg(this.value)"></td>
+    </tr>
+    <tr>
+        <th class="txt">真性半導体における電子の状態密度</th>
+        <td class="input_num"><input id="input_neds_txt" type="text" value="1.31e+28" class="input_txt"></td>
+        <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^{-3}}]&chs=500" height="12px"></td>
+        <td class="slider_bar"><input id="input_neds_sld" type="range" value="1.31e+28" min="0" max="1e+29" step="1e+24" oninput="changing_neds(this.value)"></td>
+    </tr>
+    <tr>
+        <th colspan="4" style="text-align: center">
+            <input id="localVoltage" type="checkbox"> 真性半導体に起因する電子数に局所的な電場エネルギーを考慮する
+        </th>
+    </tr>
+    </tbody>
+</table>
+
+<br><br>
 
 </body>
 </html>

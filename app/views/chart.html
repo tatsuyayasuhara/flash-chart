@@ -197,6 +197,10 @@
             });
         };
 
+        window.onresize = function () {
+            send()
+        };
+
         function send_ev(num) {
             config.externalVoltage = num;
             document.getElementById('input_ev_sld').value = num;

@@ -4,6 +4,56 @@
     <meta charset="UTF-8">
     <title>Chart</title>
     <style>
+        .buttons {
+            text-align: center;
+        }
+        .save_button {
+            min-width: 100px;
+            font-family: inherit;
+            appearance: none;
+            border: 0;
+            border-radius: 5px;
+            background: #4676d7;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .save_button:hover {
+            background: #1d49aa;
+        }
+
+        .save_button:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px #cbd6ee;
+        }
+        .save_button[disabled] {
+            color: #d2d5db;
+            background: #6c7589;
+            cursor: not-allowed;
+        }
+        .clear_button {
+            min-width: 100px;
+            font-family: inherit;
+            appearance: none;
+            border: 0;
+            border-radius: 5px;
+            background: #d74646;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .clear_button:hover {
+            background: #aa1d1d;
+        }
+
+        .clear_button:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px #eecbcb;
+        }
         .input_txt {
             width: 100px;
             font-size: 16px;
@@ -41,7 +91,7 @@
             padding: 1em;
         }
         table thead tr{
-            background-color: #264eff;
+            background-color: #3b60ff;
             color:#fff;
         }
         table tbody th {
@@ -111,6 +161,72 @@
             color: "#d80000",
         };
 
+        var saved1 = [];
+        var saved2 = [];
+        var saved3 = [];
+        var saved4 = [];
+
+        function save1() {
+            save(saved1);
+            document.getElementById('save1button').disabled = true;
+            document.getElementById('save2button').disabled = false;
+        }
+
+        function save2() {
+            save(saved2);
+            document.getElementById('save2button').disabled = true;
+            document.getElementById('save3button').disabled = false;
+        }
+
+        function save3() {
+            save(saved3);
+            document.getElementById('save3button').disabled = true;
+            document.getElementById('save4button').disabled = false;
+        }
+
+        function save4() {
+            save(saved4);
+            document.getElementById('save4button').disabled = true;
+        }
+
+        function save(list) {
+            var params = {
+                "external_voltage": config.externalVoltage,
+                "vacancy_energy": config.vacancyEnergy,
+                "oxygen_pressure": config.oxygenPressure,
+                "heat_capacity": config.heatCapacity,
+                "molar_volume": config.molarVolume,
+                "electron_DOS": config.electronDOS,
+                "formation_entropy": config.formationEntropy,
+                "mobility_coef": config.mobilityCoef,
+                "rearrange_energy": config.rearrangeE,
+                "local_valency": config.localValency,
+                "local_potential": config.localPotential,
+                "heating_rate": config.heatingRate,
+                "semi_band_gap": config.semiBandGap,
+                "semi_EDOS": config.semiEDOS,
+                "enable_voltage": config.semiElectron.localVoltage.enable
+            };
+            $.get("/calc/flash/", params).done(function (data) {
+                for (i = 0; i < data["temperature"].values.length; i++){
+                    var power = data["power_dissipation"].values[i]/1.0e+9;
+                    list.push(power)
+                }
+            })
+        }
+
+        function clearSave() {
+            saved1 = [];
+            saved2 = [];
+            saved3 = [];
+            saved4 = [];
+            document.getElementById('save1button').disabled = false;
+            document.getElementById('save2button').disabled = true;
+            document.getElementById('save3button').disabled = true;
+            document.getElementById('save4button').disabled = true;
+            send();
+        }
+
         function send () {
             var params = {
                 "external_voltage": config.externalVoltage,
@@ -133,12 +249,35 @@
                 var dataTable = new google.visualization.DataTable();
                 dataTable.addColumn('number', 'X');
                 dataTable.addColumn('number', 'W');
+                if (saved1.length !== 0) {
+                    dataTable.addColumn('number', '1');
+                }
+                if (saved2.length !== 0) {
+                    dataTable.addColumn('number', '2');
+                }
+                if (saved3.length !== 0) {
+                    dataTable.addColumn('number', '3');
+                }
+                if (saved4.length !== 0) {
+                    dataTable.addColumn('number', '4');
+                }
 
                 var googleChartData = [];
                 for (i = 0; i < data["temperature"].values.length; i++){
                     var temp = data["temperature"].values[i];
                     var power = data["power_dissipation"].values[i]/1.0e+9;
-                    var datas = [temp, power];
+                    var datas = [];
+                    if (saved1.length !== 0 && saved2.length === 0 && saved3.length === 0 && saved4.length === 0) {
+                        datas = [temp, power, saved1[i]];
+                    } else if (saved1.length !== 0 && saved2.length !== 0 && saved3.length === 0 && saved4.length === 0){
+                        datas = [temp, power, saved1[i], saved2[i]];
+                    } else if (saved1.length !== 0 && saved2.length !== 0 && saved3.length !== 0 && saved4.length === 0){
+                        datas = [temp, power, saved1[i], saved2[i], saved3[i]];
+                    } else if (saved1.length !== 0 && saved2.length !== 0 && saved3.length !== 0 && saved4.length !== 0){
+                        datas = [temp, power, saved1[i], saved2[i], saved3[i], saved4[i]];
+                    } else {
+                        datas = [temp, power];
+                    }
                     googleChartData.push(datas)
                 }
                 dataTable.addRows(googleChartData);
@@ -325,6 +464,14 @@
 
 <div id="chart_div" style="width: 100%; height: 800px; margin: auto"></div>
 
+<div class="buttons">
+    <button id="save1button" class="save_button" onclick="save1()">Save1</button>
+    <button id="save2button" class="save_button" onclick="save2()" disabled>Save2</button>
+    <button id="save3button" class="save_button" onclick="save3()" disabled>Save3</button>
+    <button id="save4button" class="save_button" onclick="save4()" disabled>Save4</button>
+    <button class="clear_button" onclick="clearSave()">Clear</button>
+</div>
+<br>
 <table>
     <thead>
     <tr>

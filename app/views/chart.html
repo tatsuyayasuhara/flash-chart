@@ -8,30 +8,108 @@
             text-align: center;
             padding-top: 8px;
         }
-        .save_button {
+        .button1 {
             min-width: 100px;
             font-family: inherit;
             appearance: none;
             border: 0;
             border-radius: 5px;
-            background: #4676d7;
+            background: #ff7900;
             color: #fff;
             padding: 8px 16px;
             font-size: 1rem;
             cursor: pointer;
         }
 
-        .save_button:hover {
-            background: #1d49aa;
+        .button1:hover {
+            background: #aa4e1d;
         }
 
-        .save_button:focus {
+        .button1:focus {
             outline: none;
             box-shadow: 0 0 0 4px #cbd6ee;
         }
-        .save_button[disabled] {
+        .button1[disabled] {
             color: #d2d5db;
-            background: #6c7589;
+            background: #89756c;
+            cursor: not-allowed;
+        }
+        .button2 {
+            min-width: 100px;
+            font-family: inherit;
+            appearance: none;
+            border: 0;
+            border-radius: 5px;
+            background: #2fd800;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .button2:hover {
+            background: #58aa1d;
+        }
+
+        .button2:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px #cbd6ee;
+        }
+        .button2[disabled] {
+            color: #d2d5db;
+            background: #77896c;
+            cursor: not-allowed;
+        }
+        .button3 {
+            min-width: 100px;
+            font-family: inherit;
+            appearance: none;
+            border: 0;
+            border-radius: 5px;
+            background: #0048d8;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .button3:hover {
+            background: #1d3caa;
+        }
+
+        .button3:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px #cbd6ee;
+        }
+        .button3[disabled] {
+            color: #d2d5db;
+            background: #6c7889;
+            cursor: not-allowed;
+        }
+        .button4 {
+            min-width: 100px;
+            font-family: inherit;
+            appearance: none;
+            border: 0;
+            border-radius: 5px;
+            background: #6c00d8;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .button4:hover {
+            background: #681daa;
+        }
+
+        .button4:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px #cbd6ee;
+        }
+        .button4[disabled] {
+            color: #d2d5db;
+            background: #7b6c89;
             cursor: not-allowed;
         }
         .clear_button {
@@ -129,7 +207,7 @@
     <script type="text/javascript">
         google.charts.load('current', {packages: ['corechart', 'line']});
 
-        var config = {
+        let config = {
             externalVoltage:  40e+2,
             vacancyEnergy:    3.956e+5,
             oxygenPressure:   0.21,
@@ -180,7 +258,6 @@
         function save1() {
             params1 = currentParams();
             save(saved1, params1);
-            console.log(params1["external_voltage"])
             document.getElementById('export1button').disabled = false;
             document.getElementById('save1button').disabled = true;
             document.getElementById('save2button').disabled = false;
@@ -233,13 +310,14 @@
         function save(powerList, params) {
             tempList = [];
             $.get("/calc/flash/", params).done(function (data) {
-                for (i = 0; i < data["temperature"].values.length; i++){
+                for (let i = 0; i < data["temperature"].values.length; i++){
                     let temp = data["temperature"].values[i];
                     let power = data["power_dissipation"].values[i]/1.0e+9;
                     tempList.push(temp)
                     powerList.push(power)
                 }
             })
+            send()
         }
 
         function clearSave() {
@@ -343,9 +421,9 @@
         }
 
         function send () {
-            var params = currentParams();
+            let params = currentParams();
             $.get("/calc/flash/", params).done(function (data) {
-                var dataTable = new google.visualization.DataTable();
+                let dataTable = new google.visualization.DataTable();
                 dataTable.addColumn('number', 'X');
                 dataTable.addColumn('number', 'W');
                 if (saved1.length !== 0) {
@@ -361,11 +439,11 @@
                     dataTable.addColumn('number', '4');
                 }
 
-                var googleChartData = [];
+                let googleChartData = [];
                 for (i = 0; i < data["temperature"].values.length; i++){
-                    var temp = data["temperature"].values[i];
-                    var power = data["power_dissipation"].values[i]/1.0e+9;
-                    var datas = [];
+                    let temp = data["temperature"].values[i];
+                    let power = data["power_dissipation"].values[i]/1.0e+9;
+                    let datas = [];
                     if (saved1.length !== 0 && saved2.length === 0 && saved3.length === 0 && saved4.length === 0) {
                         datas = [temp, power, saved1[i]];
                     } else if (saved1.length !== 0 && saved2.length !== 0 && saved3.length === 0 && saved4.length === 0){
@@ -381,7 +459,7 @@
                 }
                 dataTable.addRows(googleChartData);
 
-                var options = {
+                let options = {
                     legend: {
                         position: "none"
                     },
@@ -411,9 +489,15 @@
                             bold: true,
                         }
                     },
-                    colors: [config.color],
+                    colors: [
+                        "#d80000",
+                        "#ff7900",
+                        "#2fd800",
+                        "#0048d8",
+                        "#6c00d8",
+                    ],
                 };
-                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                let chart = new google.visualization.LineChart(document.getElementById('chart_div'));
                 chart.draw(dataTable, options);
             })
         }
@@ -564,17 +648,17 @@
 <div id="chart_div" style="width: 100%; height: 800px; margin: auto"></div>
 
 <div class="buttons">
-    <button id="save1button" class="save_button" onclick="save1()">Save 1</button>
-    <button id="save2button" class="save_button" onclick="save2()" disabled>Save 2</button>
-    <button id="save3button" class="save_button" onclick="save3()" disabled>Save 3</button>
-    <button id="save4button" class="save_button" onclick="save4()" disabled>Save 4</button>
+    <button id="save1button" class="button1" onclick="save1()">Save 1</button>
+    <button id="save2button" class="button2" onclick="save2()" disabled>Save 2</button>
+    <button id="save3button" class="button3" onclick="save3()" disabled>Save 3</button>
+    <button id="save4button" class="button4" onclick="save4()" disabled>Save 4</button>
     <button class="clear_button" onclick="clearSave()">Clear</button>
 </div>
 <div class="buttons">
-    <button id="export1button" class="save_button" onclick="export1()" disabled>Export 1</button>
-    <button id="export2button" class="save_button" onclick="export2()" disabled>Export 2</button>
-    <button id="export3button" class="save_button" onclick="export3()" disabled>Export 3</button>
-    <button id="export4button" class="save_button" onclick="export4()" disabled>Export 4</button>
+    <button id="export1button" class="button1" onclick="export1()" disabled>Export 1</button>
+    <button id="export2button" class="button2" onclick="export2()" disabled>Export 2</button>
+    <button id="export3button" class="button3" onclick="export3()" disabled>Export 3</button>
+    <button id="export4button" class="button4" onclick="export4()" disabled>Export 4</button>
     <button id="all_export_button" class="clear_button" onclick="exportAll()" disabled>All</button>
 </div>
 <br>

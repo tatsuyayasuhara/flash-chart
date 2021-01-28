@@ -143,7 +143,7 @@
             localPotential:   3.75,
             heatingRate:      0.167,
             semiBandGap:      4.824e+5 ,
-            semiEDOS:         1.31e+28,
+            semiEDOS:         0,//1.31e+28,
             semiElectron: {
                 localVoltage: {
                     enable: false,
@@ -564,17 +564,17 @@
 <div id="chart_div" style="width: 100%; height: 800px; margin: auto"></div>
 
 <div class="buttons">
-    <button id="save1button" class="save_button" onclick="save1()">Save1</button>
-    <button id="save2button" class="save_button" onclick="save2()" disabled>Save2</button>
-    <button id="save3button" class="save_button" onclick="save3()" disabled>Save3</button>
-    <button id="save4button" class="save_button" onclick="save4()" disabled>Save4</button>
+    <button id="save1button" class="save_button" onclick="save1()">Save 1</button>
+    <button id="save2button" class="save_button" onclick="save2()" disabled>Save 2</button>
+    <button id="save3button" class="save_button" onclick="save3()" disabled>Save 3</button>
+    <button id="save4button" class="save_button" onclick="save4()" disabled>Save 4</button>
     <button class="clear_button" onclick="clearSave()">Clear</button>
 </div>
 <div class="buttons">
-    <button id="export1button" class="save_button" onclick="export1()" disabled>Export1</button>
-    <button id="export2button" class="save_button" onclick="export2()" disabled>Export2</button>
-    <button id="export3button" class="save_button" onclick="export3()" disabled>Export3</button>
-    <button id="export4button" class="save_button" onclick="export4()" disabled>Export4</button>
+    <button id="export1button" class="save_button" onclick="export1()" disabled>Export 1</button>
+    <button id="export2button" class="save_button" onclick="export2()" disabled>Export 2</button>
+    <button id="export3button" class="save_button" onclick="export3()" disabled>Export 3</button>
+    <button id="export4button" class="save_button" onclick="export4()" disabled>Export 4</button>
     <button id="all_export_button" class="clear_button" onclick="exportAll()" disabled>All</button>
 </div>
 <br>
@@ -675,9 +675,9 @@
     </tr>
     <tr>
         <th class="txt">真性半導体における電子の状態密度</th>
-        <td class="input_num"><input id="input_neds_txt" type="text" value="1.31e+28" class="input_txt"></td>
+        <td class="input_num"><input id="input_neds_txt" type="text" value="0" class="input_txt"></td>
         <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm m^{-3}}]&chs=500" height="12px"></td>
-        <td class="slider_bar"><input id="input_neds_sld" type="range" value="1.31e+28" min="0" max="5e+28" step="1e+24" oninput="changing_neds(this.value)"></td>
+        <td class="slider_bar"><input id="input_neds_sld" type="range" value="0" min="0" max="5e+28" step="1e+24" oninput="changing_neds(this.value)"></td>
     </tr>
     <tr>
         <th colspan="4" style="text-align: center">

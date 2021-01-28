@@ -172,9 +172,15 @@
         let saved3 = [];
         let saved4 = [];
         let tempList = [];
+        let params1 = Map;
+        let params2 = Map;
+        let params3 = Map;
+        let params4 = Map;
 
         function save1() {
-            save(saved1);
+            params1 = currentParams();
+            save(saved1, params1);
+            console.log(params1["external_voltage"])
             document.getElementById('export1button').disabled = false;
             document.getElementById('save1button').disabled = true;
             document.getElementById('save2button').disabled = false;
@@ -182,21 +188,24 @@
         }
 
         function save2() {
-            save(saved2);
+            params2 = currentParams();
+            save(saved2, params2);
             document.getElementById('export2button').disabled = false;
             document.getElementById('save2button').disabled = true;
             document.getElementById('save3button').disabled = false;
         }
 
         function save3() {
-            save(saved3);
+            params3 = currentParams();
+            save(saved3, params3);
             document.getElementById('export3button').disabled = false;
             document.getElementById('save3button').disabled = true;
             document.getElementById('save4button').disabled = false;
         }
 
         function save4() {
-            save(saved4);
+            params4 = currentParams();
+            save(saved4, params4);
             document.getElementById('export4button').disabled = false;
             document.getElementById('save4button').disabled = true;
         }
@@ -221,9 +230,8 @@
             }
         }
 
-        function save(powerList) {
+        function save(powerList, params) {
             tempList = [];
-            let params = currentParams()
             $.get("/calc/flash/", params).done(function (data) {
                 for (i = 0; i < data["temperature"].values.length; i++){
                     let temp = data["temperature"].values[i];
@@ -252,10 +260,10 @@
             send();
         }
 
-        const export1 = () => exportCommon('export1.csv', saved1)
-        const export2 = () => exportCommon('export2.csv', saved2)
-        const export3 = () => exportCommon('export3.csv', saved3)
-        const export4 = () => exportCommon('export4.csv', saved4)
+        const export1 = () => exportCommon('export1.csv', saved1, params1)
+        const export2 = () => exportCommon('export2.csv', saved2, params2)
+        const export3 = () => exportCommon('export3.csv', saved3, params3)
+        const export4 = () => exportCommon('export4.csv', saved4, params4)
         const exportAll = () => {
             export1()
             if (saved2.length !== 0) export2()
@@ -263,7 +271,7 @@
             if (saved4.length !== 0) export4()
         }
 
-        const exportCommon = (filename, savedList) => {
+        const exportCommon = (filename, savedList, params) => {
             let tempPower = [];
             for (let i = 0; i < tempList.length; i++){
                 tempPower.push([tempList[i], savedList[i]]);
@@ -271,21 +279,21 @@
 
             exportToCsv(filename, [
                 ['入力パラメータ'],
-                ['外部電圧(V/m)', config.externalVoltage],
-                ['昇温速度(K/s)', config.heatingRate],
-                ['局所価数', config.localValency],
-                ['局所電位(V)', config.localPotential],
-                ['酸素分圧(bar)', config.oxygenPressure],
-                ['定圧モル熱容量(J/(K･mol))', config.heatCapacity],
-                ['モル体積(m^3/mol)', config.molarVolume.toExponential()],
-                ['酸素イオン空孔の形成エンタルピー(J/mol)', config.vacancyEnergy.toExponential()],
-                ['酸素イオン空孔の形成エントロピー(J/(K･mol)', config.formationEntropy],
-                ['電子のホッピング伝導における頻度因子(m^2/(V･s))', config.mobilityCoef],
-                ['電子のホッピング伝導における活性化エネルギー(J/mol)', config.rearrangeE.toExponential()],
-                ['単位体積当たりの電子の有効状態密度(m^-3)', config.electronDOS.toExponential()],
-                ['真性半導体におけるバンドギャップ(J/mol)', config.semiBandGap.toExponential()],
-                ['真性半導体における電子の状態密度(m^-3)', config.semiEDOS],
-                ['局所的な電場エネルギーを考慮するか(true/false)', config.semiElectron.localVoltage.enable],
+                ['外部電圧(V/m)', params['external_voltage']],
+                ['昇温速度(K/s)', params['heating_rate']],
+                ['局所価数', params['local_valency']],
+                ['局所電位(V)', params['local_potential']],
+                ['酸素分圧(bar)', params['oxygen_pressure']],
+                ['定圧モル熱容量(J/(K･mol))', params['heat_capacity']],
+                ['モル体積(m^3/mol)', parseFloat(params['molar_volume']).toExponential()],
+                ['酸素イオン空孔の形成エンタルピー(J/mol)', parseFloat(params['vacancy_energy']).toExponential()],
+                ['酸素イオン空孔の形成エントロピー(J/(K･mol)', params['formation_entropy']],
+                ['電子のホッピング伝導における頻度因子(m^2/(V･s))', params['mobility_coef']],
+                ['電子のホッピング伝導における活性化エネルギー(J/mol)', parseFloat(params['rearrange_energy']).toExponential()],
+                ['単位体積当たりの電子の有効状態密度(m^-3)', parseFloat(params['electron_DOS']).toExponential()],
+                ['真性半導体におけるバンドギャップ(J/mol)', parseFloat(params['semi_band_gap']).toExponential()],
+                ['真性半導体における電子の状態密度(m^-3)', params['semi_EDOS']],
+                ['局所的な電場エネルギーを考慮するか(true/false)', params["enable_voltage"]],
                 ['', ''],
                 ['出力データ'],
                 ['温度(℃)', '消費電力(10^9W･m^-3)'],

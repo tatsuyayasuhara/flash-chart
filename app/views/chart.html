@@ -6,6 +6,7 @@
     <style>
         .buttons {
             text-align: center;
+            padding-top: 8px;
         }
         .save_button {
             min-width: 100px;
@@ -53,6 +54,11 @@
         .clear_button:focus {
             outline: none;
             box-shadow: 0 0 0 4px #eecbcb;
+        }
+        .clear_button[disabled] {
+            color: #d2d5db;
+            background: #896c6c;
+            cursor: not-allowed;
         }
         .input_txt {
             width: 100px;
@@ -145,14 +151,14 @@
             },
             title: "Furnace temperature dependence of power dissipation in flash sintering.",
             hAxis: {
-                title: "Temperature /℃",
+                title: "Temperature (℃)",
                 window: {
                     max: 1500,
                     min: 500,
                 }
             },
             vAxis: {
-                title: "Power dissipation /10^9Wm^-3",
+                title: "Power dissipation (10^9Wm^-3)",
                 window: {
                     max: 1.0,
                     min: 0,
@@ -161,36 +167,42 @@
             color: "#d80000",
         };
 
-        var saved1 = [];
-        var saved2 = [];
-        var saved3 = [];
-        var saved4 = [];
+        let saved1 = [];
+        let saved2 = [];
+        let saved3 = [];
+        let saved4 = [];
+        let tempList = [];
 
         function save1() {
             save(saved1);
+            document.getElementById('export1button').disabled = false;
             document.getElementById('save1button').disabled = true;
             document.getElementById('save2button').disabled = false;
+            document.getElementById('all_export_button').disabled = false;
         }
 
         function save2() {
             save(saved2);
+            document.getElementById('export2button').disabled = false;
             document.getElementById('save2button').disabled = true;
             document.getElementById('save3button').disabled = false;
         }
 
         function save3() {
             save(saved3);
+            document.getElementById('export3button').disabled = false;
             document.getElementById('save3button').disabled = true;
             document.getElementById('save4button').disabled = false;
         }
 
         function save4() {
             save(saved4);
+            document.getElementById('export4button').disabled = false;
             document.getElementById('save4button').disabled = true;
         }
 
-        function save(list) {
-            var params = {
+        const currentParams = () => {
+            return {
                 "external_voltage": config.externalVoltage,
                 "vacancy_energy": config.vacancyEnergy,
                 "oxygen_pressure": config.oxygenPressure,
@@ -206,11 +218,18 @@
                 "semi_band_gap": config.semiBandGap,
                 "semi_EDOS": config.semiEDOS,
                 "enable_voltage": config.semiElectron.localVoltage.enable
-            };
+            }
+        }
+
+        function save(powerList) {
+            tempList = [];
+            let params = currentParams()
             $.get("/calc/flash/", params).done(function (data) {
                 for (i = 0; i < data["temperature"].values.length; i++){
-                    var power = data["power_dissipation"].values[i]/1.0e+9;
-                    list.push(power)
+                    let temp = data["temperature"].values[i];
+                    let power = data["power_dissipation"].values[i]/1.0e+9;
+                    tempList.push(temp)
+                    powerList.push(power)
                 }
             })
         }
@@ -220,31 +239,103 @@
             saved2 = [];
             saved3 = [];
             saved4 = [];
+            tempList = [];
             document.getElementById('save1button').disabled = false;
             document.getElementById('save2button').disabled = true;
             document.getElementById('save3button').disabled = true;
             document.getElementById('save4button').disabled = true;
+            document.getElementById('export1button').disabled = true;
+            document.getElementById('export2button').disabled = true;
+            document.getElementById('export3button').disabled = true;
+            document.getElementById('export4button').disabled = true;
+            document.getElementById('all_export_button').disabled = true;
             send();
         }
 
-        function send () {
-            var params = {
-                "external_voltage": config.externalVoltage,
-                "vacancy_energy": config.vacancyEnergy,
-                "oxygen_pressure": config.oxygenPressure,
-                "heat_capacity": config.heatCapacity,
-                "molar_volume": config.molarVolume,
-                "electron_DOS": config.electronDOS,
-                "formation_entropy": config.formationEntropy,
-                "mobility_coef": config.mobilityCoef,
-                "rearrange_energy": config.rearrangeE,
-                "local_valency": config.localValency,
-                "local_potential": config.localPotential,
-                "heating_rate": config.heatingRate,
-                "semi_band_gap": config.semiBandGap,
-                "semi_EDOS": config.semiEDOS,
-                "enable_voltage": config.semiElectron.localVoltage.enable
+        const export1 = () => exportCommon('export1.csv', saved1)
+        const export2 = () => exportCommon('export2.csv', saved2)
+        const export3 = () => exportCommon('export3.csv', saved3)
+        const export4 = () => exportCommon('export4.csv', saved4)
+        const exportAll = () => {
+            export1()
+            if (saved2.length !== 0) export2()
+            if (saved3.length !== 0) export3()
+            if (saved4.length !== 0) export4()
+        }
+
+        const exportCommon = (filename, savedList) => {
+            let tempPower = [];
+            for (let i = 0; i < tempList.length; i++){
+                tempPower.push([tempList[i], savedList[i]]);
+            }
+
+            exportToCsv(filename, [
+                ['入力パラメータ'],
+                ['外部電圧(V/m)', config.externalVoltage],
+                ['昇温速度(K/s)', config.heatingRate],
+                ['局所価数', config.localValency],
+                ['局所電位(V)', config.localPotential],
+                ['酸素分圧(bar)', config.oxygenPressure],
+                ['定圧モル熱容量(J/(K･mol))', config.heatCapacity],
+                ['モル体積(m^3/mol)', config.molarVolume.toExponential()],
+                ['酸素イオン空孔の形成エンタルピー(J/mol)', config.vacancyEnergy.toExponential()],
+                ['酸素イオン空孔の形成エントロピー(J/(K･mol)', config.formationEntropy],
+                ['電子のホッピング伝導における頻度因子(m^2/(V･s))', config.mobilityCoef],
+                ['電子のホッピング伝導における活性化エネルギー(J/mol)', config.rearrangeE.toExponential()],
+                ['単位体積当たりの電子の有効状態密度(m^-3)', config.electronDOS.toExponential()],
+                ['真性半導体におけるバンドギャップ(J/mol)', config.semiBandGap.toExponential()],
+                ['真性半導体における電子の状態密度(m^-3)', config.semiEDOS],
+                ['局所的な電場エネルギーを考慮するか(true/false)', config.semiElectron.localVoltage.enable],
+                ['', ''],
+                ['出力データ'],
+                ['温度(℃)', '消費電力(10^9W･m^-3)'],
+                ...tempPower
+            ])
+        }
+
+        const exportToCsv = (filename, rows) => {
+            let processRow = function (row) {
+                let finalVal = '';
+                for (let j = 0; j < row.length; j++) {
+                    let innerValue = row[j] === null ? '' : row[j].toString();
+                    if (row[j] instanceof Date) {
+                        innerValue = row[j].toLocaleString();
+                    }
+                    let result = innerValue.replace(/"/g, '""');
+                    if (result.search(/("|,|\n)/g) >= 0)
+                        result = '"' + result + '"';
+                    if (j > 0)
+                        finalVal += ',';
+                    finalVal += result;
+                }
+                return finalVal + '\n';
             };
+
+            let csvFile = '';
+            for (let i = 0; i < rows.length; i++) {
+                csvFile += processRow(rows[i]);
+            }
+
+            let blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+            if (navigator.msSaveBlob) { // IE 10+
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                let link = document.createElement("a");
+                if (link.download !== undefined) { // feature detection
+                    // Browsers that support HTML5 download attribute
+                    let url = URL.createObjectURL(blob);
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", filename);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
+        }
+
+        function send () {
+            var params = currentParams();
             $.get("/calc/flash/", params).done(function (data) {
                 var dataTable = new google.visualization.DataTable();
                 dataTable.addColumn('number', 'X');
@@ -470,6 +561,13 @@
     <button id="save3button" class="save_button" onclick="save3()" disabled>Save3</button>
     <button id="save4button" class="save_button" onclick="save4()" disabled>Save4</button>
     <button class="clear_button" onclick="clearSave()">Clear</button>
+</div>
+<div class="buttons">
+    <button id="export1button" class="save_button" onclick="export1()" disabled>Export1</button>
+    <button id="export2button" class="save_button" onclick="export2()" disabled>Export2</button>
+    <button id="export3button" class="save_button" onclick="export3()" disabled>Export3</button>
+    <button id="export4button" class="save_button" onclick="export4()" disabled>Export4</button>
+    <button id="all_export_button" class="clear_button" onclick="exportAll()" disabled>All</button>
 </div>
 <br>
 <table>

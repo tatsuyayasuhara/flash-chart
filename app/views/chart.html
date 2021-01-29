@@ -256,37 +256,37 @@
         let params4 = Map;
 
         async function save1() {
+            document.getElementById('save1button').disabled = true;
+            document.getElementById('input_hr_txt').disabled = true;
+            document.getElementById('input_hr_sld').disabled = true;
             params1 = currentParams();
             await save(saved1, params1)
             document.getElementById('export1button').disabled = false;
-            document.getElementById('save1button').disabled = true;
             document.getElementById('save2button').disabled = false;
             document.getElementById('all_export_button').disabled = false;
-            document.getElementById('input_hr_txt').disabled = true;
-            document.getElementById('input_hr_sld').disabled = true;
         }
 
         async function save2() {
+            document.getElementById('save2button').disabled = true;
             params2 = currentParams();
             await save(saved2, params2);
             document.getElementById('export2button').disabled = false;
-            document.getElementById('save2button').disabled = true;
             document.getElementById('save3button').disabled = false;
         }
 
         async function save3() {
+            document.getElementById('save3button').disabled = true;
             params3 = currentParams();
             await save(saved3, params3);
             document.getElementById('export3button').disabled = false;
-            document.getElementById('save3button').disabled = true;
             document.getElementById('save4button').disabled = false;
         }
 
         async function save4() {
+            document.getElementById('save4button').disabled = true;
             params4 = currentParams();
             await save(saved4, params4);
             document.getElementById('export4button').disabled = false;
-            document.getElementById('save4button').disabled = true;
         }
 
         const currentParams = () => {

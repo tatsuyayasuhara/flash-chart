@@ -1,6 +1,8 @@
 package models
 
-import "math"
+import (
+	"math"
+)
 
 type DataFrameFlash struct {
 	Temperature      *Temperature      `json:"temperature,omitempty"`
@@ -15,11 +17,9 @@ type PowerDissipation struct {
 	Values []float64 `json:"values,omitempty"`
 }
 
-const NDP int = 6001
 const RR float64 = 8.3145
 const FF float64 = 96485.33289 // [C/mol]
 const E0 float64 = 1.6021766208e-19 // [C]
-var nd = NDP - 1
 var dt = 1.0
 var ds = 0.01*dt
 
@@ -49,6 +49,7 @@ func (dff *DataFrameFlash) CalcW(voltage, vacancyE, pressure, heatCap, molarVolu
 	pO2 := pressure
 	var tList []float64
 	var wList []float64
+	nd := int(math.Ceil(1000/dTFdt))
 	for ii := 0; ii <= nd; ii++ {
 		TF += dTFdt * dt
 		tList = append(tList, TF - 273) //todo 初回のみの処理にしたい

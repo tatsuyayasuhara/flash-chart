@@ -219,7 +219,7 @@
             rearrangeE:       1.824e+5,
             localValency:     -2,
             localPotential:   3.75,
-            heatingRate:      0.167,
+            heatingRate:      1/6,
             semiBandGap:      4.824e+5 ,
             semiEDOS:         0,//1.31e+28,
             semiElectron: {
@@ -679,9 +679,9 @@
     </tr>
     <tr>
         <th class="txt">昇温速度</th>
-        <td class="input_num"><input id="input_hr_txt" type="text" value="0.167" class="input_txt"></td>
+        <td class="input_num"><input id="input_hr_txt" type="text" value="0.166667" class="input_txt"></td>
         <td class="unit"><img src="https://chart.googleapis.com/chart?cht=tx&chl=[{\rm K}/{\rm s}]&chs=500" height="12px"></td>
-        <td class="slider_bar"><input id="input_hr_sld" type="range" value="0.167" min="0" max="0.5" step="0.01" oninput="changing_hr(this.value)"></td>
+        <td class="slider_bar"><input id="input_hr_sld" type="range" value="0.166667" min="0" max="0.5" step="0.01" oninput="changing_hr(this.value)"></td>
     </tr>
     <tr>
         <th class="txt">局所価数</th>
